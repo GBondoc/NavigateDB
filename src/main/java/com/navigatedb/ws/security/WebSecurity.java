@@ -52,7 +52,7 @@ public class WebSecurity {
                                 .and()
                                 .authenticationManager(authenticationManager)
                                 .addFilter(authenticationFilter)
-                                .addFilter(new AuthenticationFilter(authenticationManager))
+                                .addFilter(new AuthorizationFilter(authenticationManager))
                                 .sessionManagement((session) -> session
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
                     } catch (Exception e) {
