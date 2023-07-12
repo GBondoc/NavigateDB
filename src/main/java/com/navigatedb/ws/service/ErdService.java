@@ -2,6 +2,8 @@ package com.navigatedb.ws.service;
 
 import com.navigatedb.ws.shared.dto.ErdDto;
 
+import java.util.List;
+
 public interface ErdService {
     ErdDto createErd(ErdDto erd);
 
@@ -10,4 +12,6 @@ public interface ErdService {
     ErdDto updateErd(String erdId, ErdDto erd);
 
     void deleteErd(String erdId);
+
+    List<ErdDto> getErds(int page, int limit);
 }

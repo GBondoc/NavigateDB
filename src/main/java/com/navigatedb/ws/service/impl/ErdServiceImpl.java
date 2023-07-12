@@ -9,7 +9,13 @@ import com.navigatedb.ws.shared.dto.ErdDto;
 import com.navigatedb.ws.ui.model.response.ErrorMessages;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ErdServiceImpl implements ErdService {
@@ -74,6 +80,26 @@ public class ErdServiceImpl implements ErdService {
         if(erdEntity == null) throw new ErdServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 
         erdRepository.delete(erdEntity);
+    }
+
+    @Override
+    public List<ErdDto> getErds(int page, int limit) {
+        List<ErdDto> returnValue = new ArrayList<>();
+
+        if(page > 0) page = page - 1;
+
+        Pageable pageableRequest = PageRequest.of(page, limit);
+
+        Page<ErdEntity> erdsPage = erdRepository.findAll(pageableRequest);
+        List<ErdEntity> erds = erdsPage.getContent();
+
+        for(ErdEntity erdEntity : erds) {
+            ErdDto erdDto = new ErdDto();
+            BeanUtils.copyProperties(erdEntity, erdDto);
+            returnValue.add(erdDto);
+        }
+
+        return returnValue;
     }
 
 }

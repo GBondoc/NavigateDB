@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("erds")
 public class ErdController {
@@ -79,6 +82,22 @@ public class ErdController {
         erdService.deleteErd(id);
 
         returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+
+        return returnValue;
+    }
+
+    @GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public List<ErdRest> getErds(@RequestParam(value = "page", defaultValue = "0") int page,
+                                 @RequestParam(value = "limit", defaultValue = "50") int limit) {
+        List<ErdRest> returnValue = new ArrayList<>();
+
+        List<ErdDto> erds = erdService.getErds(page, limit);
+
+        for(ErdDto erdDto : erds) {
+            ErdRest erdModel = new ErdRest();
+            BeanUtils.copyProperties(erdDto, erdModel);
+            returnValue.add(erdModel);
+        }
 
         return returnValue;
     }
