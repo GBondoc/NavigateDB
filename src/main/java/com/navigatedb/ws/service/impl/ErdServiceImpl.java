@@ -10,7 +10,6 @@ import com.navigatedb.ws.shared.Utils;
 import com.navigatedb.ws.shared.dto.ErdDto;
 import com.navigatedb.ws.ui.model.response.ErrorMessages;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,35 +36,32 @@ public class ErdServiceImpl implements ErdService {
 
         if(erdRepository.findByName(erd.getName()) != null) throw new ErdServiceException("Erd already exists");
 
-        ErdEntity erdEntity = new ErdEntity();
-        BeanUtils.copyProperties(erd, erdEntity);
+        ModelMapper modelMapper = new ModelMapper();
+        ErdEntity erdEntity = modelMapper.map(erd, ErdEntity.class);
 
         String publicErdId = utils.generateErdId(30);
         erdEntity.setErdId(publicErdId);
 
         ErdEntity storedErdDetails = erdRepository.save(erdEntity);
 
-        ErdDto returnValue = new ErdDto();
-        BeanUtils.copyProperties(storedErdDetails, returnValue);
-
-        return returnValue;
+        return modelMapper.map(storedErdDetails, ErdDto.class);
     }
 
     @Override
     public ErdDto getErdByErdId(String erdId) {
-        ErdDto returnValue = new ErdDto();
+
         ErdEntity erdEntity = erdRepository.findByErdId(erdId);
 
         if(erdEntity == null) throw new ErdServiceException("ERD with ID: " + erdId + " not found");
 
-        BeanUtils.copyProperties(erdEntity, returnValue);
+        ModelMapper modelMapper = new ModelMapper();
 
-        return returnValue;
+        return modelMapper.map(erdEntity, ErdDto.class);
     }
 
     @Override
     public ErdDto updateErd(String erdId, ErdDto erd) {
-        ErdDto returnValue = new ErdDto();
+
         ErdEntity erdEntity = erdRepository.findByErdId(erdId);
 
         if(erdEntity == null) throw new ErdServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
@@ -74,9 +70,9 @@ public class ErdServiceImpl implements ErdService {
 
         ErdEntity updatedErdDetails = erdRepository.save(erdEntity);
 
-        BeanUtils.copyProperties(updatedErdDetails, returnValue);
+        ModelMapper modelMapper = new ModelMapper();
 
-        return returnValue;
+        return modelMapper.map(updatedErdDetails, ErdDto.class);
     }
 
     @Override
@@ -98,10 +94,10 @@ public class ErdServiceImpl implements ErdService {
 
         Page<ErdEntity> erdsPage = erdRepository.findAll(pageableRequest);
         List<ErdEntity> erds = erdsPage.getContent();
+        ModelMapper modelMapper = new ModelMapper();
 
         for(ErdEntity erdEntity : erds) {
-            ErdDto erdDto = new ErdDto();
-            BeanUtils.copyProperties(erdEntity, erdDto);
+            ErdDto erdDto = modelMapper.map(erdEntity, ErdDto.class);
             returnValue.add(erdDto);
         }
 
