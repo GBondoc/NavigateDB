@@ -14,4 +14,8 @@ public interface ErdService {
     void deleteErd(String erdId);
 
     List<ErdDto> getErds(int page, int limit);
+
+    List<ErdDto> getErds(String userId);
+
+    ErdDto getErd(String erdId);
 }

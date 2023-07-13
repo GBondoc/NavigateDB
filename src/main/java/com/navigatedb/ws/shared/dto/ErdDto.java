@@ -8,6 +8,7 @@ public class ErdDto implements Serializable {
     private long id;
     private String erdId;
     private String name;
+    private UserDto userDetails;
 
     public long getId() {
         return id;
@@ -31,5 +32,13 @@ public class ErdDto implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public UserDto getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails(UserDto userDetails) {
+        this.userDetails = userDetails;
     }
 }

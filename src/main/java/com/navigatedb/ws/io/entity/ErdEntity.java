@@ -1,9 +1,7 @@
 package com.navigatedb.ws.io.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.navigatedb.ws.shared.dto.UserDto;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 
@@ -20,6 +18,10 @@ public class ErdEntity implements Serializable {
 
     @Column(nullable = false, length = 100)
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    private UserEntity userDetails;
 
     public long getId() {
         return id;
@@ -43,5 +45,13 @@ public class ErdEntity implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public UserEntity getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails(UserEntity userDetails) {
+        this.userDetails = userDetails;
     }
 }
