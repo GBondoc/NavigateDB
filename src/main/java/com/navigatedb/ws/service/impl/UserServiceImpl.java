@@ -35,11 +35,11 @@ public class UserServiceImpl implements UserService {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public UserDto createUser(UserDto user) {
+    public UserDto createUser(UserDto user) throws UserServiceException {
 
-        if(userRepository.findByEmail(user.getEmail()) != null) throw new RuntimeException("Record already exists");
+        if(userRepository.findByEmail(user.getEmail()) != null) throw new UserServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
 
-        if(userRepository.findByUsername(user.getUsername()) != null) throw new RuntimeException("Record already exists");
+        if(userRepository.findByUsername(user.getUsername()) != null) throw new UserServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
 
         for(int i = 0; i < user.getErds().size(); i++) {
             ErdDto erd = user.getErds().get(i);
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserByUserId(String userId) {
+    public UserDto getUserByUserId(String userId) throws UserServiceException {
         UserEntity userEntity = userRepository.findByUserId(userId);
 
         if(userEntity == null) throw new UserServiceException("User with ID: " + userId + " not found");
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(String userId, UserDto user) {
+    public UserDto updateUser(String userId, UserDto user) throws UserServiceException {
         UserEntity userEntity = userRepository.findByUserId(userId);
 
         if(userEntity == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String userId) {
+    public void deleteUser(String userId) throws UserServiceException {
         UserEntity userEntity = userRepository.findByUserId(userId);
 
         if(userEntity == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUser(String email) {
+    public UserDto getUser(String email) throws UsernameNotFoundException {
         UserEntity userEntity = userRepository.findByEmail(email);
         if(userEntity == null) throw new UsernameNotFoundException(email);
 
