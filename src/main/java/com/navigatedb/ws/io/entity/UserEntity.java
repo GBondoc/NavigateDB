@@ -1,11 +1,9 @@
 package com.navigatedb.ws.io.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity(name="users")
 public class UserEntity implements Serializable {
@@ -31,6 +29,9 @@ public class UserEntity implements Serializable {
 
     @Column(nullable = false)
     private Boolean emailVerificationStatus = false;
+
+    @OneToMany(mappedBy = "userDetails", cascade = CascadeType.ALL)
+    private List<ErdEntity> erds;
 
     public long getId() {
         return id;
@@ -86,5 +87,13 @@ public class UserEntity implements Serializable {
 
     public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
         this.emailVerificationStatus = emailVerificationStatus;
+    }
+
+    public List<ErdEntity> getErds() {
+        return erds;
+    }
+
+    public void setErds(List<ErdEntity> erds) {
+        this.erds = erds;
     }
 }

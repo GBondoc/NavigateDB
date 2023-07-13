@@ -1,6 +1,7 @@
 package com.navigatedb.ws.shared.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class UserDto implements Serializable {
 
@@ -13,6 +14,7 @@ public class UserDto implements Serializable {
     private String encryptedPassword;
     private String emailVerificationToken;
     private Boolean emailVerificationStatus = false;
+    private List<ErdDto> erds;
 
     public long getId() {
         return id;
@@ -76,5 +78,13 @@ public class UserDto implements Serializable {
 
     public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
         this.emailVerificationStatus = emailVerificationStatus;
+    }
+
+    public List<ErdDto> getErds() {
+        return erds;
+    }
+
+    public void setErds(List<ErdDto> erds) {
+        this.erds = erds;
     }
 }

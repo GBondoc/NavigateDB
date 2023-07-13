@@ -5,8 +5,10 @@ import com.navigatedb.ws.io.entity.UserEntity;
 import com.navigatedb.ws.repository.UserRepository;
 import com.navigatedb.ws.service.UserService;
 import com.navigatedb.ws.shared.Utils;
+import com.navigatedb.ws.shared.dto.ErdDto;
 import com.navigatedb.ws.shared.dto.UserDto;
 import com.navigatedb.ws.ui.model.response.ErrorMessages;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,8 +42,15 @@ public class UserServiceImpl implements UserService {
 
         if(userRepository.findByUsername(user.getUsername()) != null) throw new RuntimeException("Record already exists");
 
-        UserEntity userEntity = new UserEntity();
-        BeanUtils.copyProperties(user, userEntity);
+        for(int i = 0; i < user.getErds().size(); i++) {
+            ErdDto erd = user.getErds().get(i);
+            erd.setUserDetails(user);
+            erd.setErdId(utils.generateErdId(30));
+            user.getErds().set(i, erd);
+        }
+
+        ModelMapper modelMapper = new ModelMapper();
+        UserEntity userEntity = modelMapper.map(user, UserEntity.class);
 
         String publicUserId = utils.generateUserId(30);
         userEntity.setUserId(publicUserId);
@@ -49,10 +58,7 @@ public class UserServiceImpl implements UserService {
 
         UserEntity storedUserDetails = userRepository.save(userEntity);
 
-        UserDto returnValue = new UserDto();
-        BeanUtils.copyProperties(storedUserDetails, returnValue);
-
-        return returnValue;
+        return modelMapper.map(storedUserDetails, UserDto.class);
     }
 
     @Override
