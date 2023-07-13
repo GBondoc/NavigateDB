@@ -38,7 +38,7 @@ public class ErdController {
             consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
             produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
-    public ErdRest createErd(@RequestBody ErdDetailsRequestModel erdDetails) throws Exception {
+    public ErdRest createErd(@RequestBody ErdDetailsRequestModel erdDetails) throws ErdServiceException {
 
         if(erdDetails.getName().isEmpty()) throw new ErdServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
@@ -54,7 +54,7 @@ public class ErdController {
             consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
             produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
-    public ErdRest updateErd(@PathVariable String id, @RequestBody ErdDetailsRequestModel erdDetails) {
+    public ErdRest updateErd(@PathVariable String id, @RequestBody ErdDetailsRequestModel erdDetails) throws ErdServiceException {
 
         if(erdDetails.getName().isEmpty()) throw new ErdServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 

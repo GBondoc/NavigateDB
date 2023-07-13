@@ -32,7 +32,7 @@ public class ErdServiceImpl implements ErdService {
     Utils utils;
 
     @Override
-    public ErdDto createErd(ErdDto erd) {
+    public ErdDto createErd(ErdDto erd) throws ErdServiceException {
 
         if(erdRepository.findByName(erd.getName()) != null) throw new ErdServiceException("Erd already exists");
 
@@ -48,7 +48,7 @@ public class ErdServiceImpl implements ErdService {
     }
 
     @Override
-    public ErdDto getErdByErdId(String erdId) {
+    public ErdDto getErdByErdId(String erdId) throws ErdServiceException {
 
         ErdEntity erdEntity = erdRepository.findByErdId(erdId);
 
@@ -60,7 +60,7 @@ public class ErdServiceImpl implements ErdService {
     }
 
     @Override
-    public ErdDto updateErd(String erdId, ErdDto erd) {
+    public ErdDto updateErd(String erdId, ErdDto erd) throws ErdServiceException {
 
         ErdEntity erdEntity = erdRepository.findByErdId(erdId);
 
@@ -76,7 +76,7 @@ public class ErdServiceImpl implements ErdService {
     }
 
     @Override
-    public void deleteErd(String erdId) {
+    public void deleteErd(String erdId) throws ErdServiceException {
         ErdEntity erdEntity = erdRepository.findByErdId(erdId);
 
         if(erdEntity == null) throw new ErdServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
