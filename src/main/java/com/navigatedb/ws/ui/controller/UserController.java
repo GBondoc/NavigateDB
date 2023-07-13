@@ -9,12 +9,10 @@ import com.navigatedb.ws.ui.model.request.UserDetailsRequestModel;
 import com.navigatedb.ws.ui.model.response.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,12 +30,11 @@ public class UserController {
             MediaType.APPLICATION_JSON_VALUE}
     )
     public UserRest getUser(@PathVariable String id) {
-        UserRest returnValue = new UserRest();
 
         UserDto userDto = userService.getUserByUserId(id);
-        BeanUtils.copyProperties(userDto, returnValue);
+        ModelMapper modelMapper = new ModelMapper();
 
-        return returnValue;
+        return modelMapper.map(userDto, UserRest.class);
     }
 
     @PostMapping(
@@ -61,17 +58,15 @@ public class UserController {
             produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
     public UserRest updateUser (@PathVariable String id, @RequestBody UserDetailsRequestModel userDetails) {
-        UserRest returnValue = new UserRest();
 
         if(userDetails.getUsername().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
-        UserDto userDto = new UserDto();
-        BeanUtils.copyProperties(userDetails, userDto);
+        ModelMapper modelMapper = new ModelMapper();
+        UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
         UserDto updatedUser = userService.updateUser(id, userDto);
-        BeanUtils.copyProperties(updatedUser, returnValue);
 
-        return returnValue;
+        return modelMapper.map(updatedUser, UserRest.class);
     }
 
     @DeleteMapping(path = "/{id}",
@@ -95,10 +90,10 @@ public class UserController {
         List<UserRest> returnValue = new ArrayList<>();
 
         List<UserDto> users = userService.getUsers(page, limit);
+        ModelMapper modelMapper = new ModelMapper();
 
         for(UserDto userDto : users) {
-            UserRest userModel = new UserRest();
-            BeanUtils.copyProperties(userDto, userModel);
+            UserRest userModel = modelMapper.map(userDto, UserRest.class);
             returnValue.add(userModel);
         }
 
@@ -131,7 +126,6 @@ public class UserController {
         ModelMapper modelMapper = new ModelMapper();
 
         return modelMapper.map(erdDto, ErdRest.class);
-
     }
 
 }
