@@ -8,7 +8,7 @@ import com.navigatedb.ws.ui.model.response.ErdRest;
 import com.navigatedb.ws.ui.model.response.ErrorMessages;
 import com.navigatedb.ws.ui.model.response.OperationStatusModel;
 import com.navigatedb.ws.ui.model.response.RequestOperationStatus;
-import org.springframework.beans.BeanUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +27,11 @@ public class ErdController {
     @GetMapping(path = "{id}", produces = { MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_JSON_VALUE})
     public ErdRest getErd(@PathVariable String id) {
-        ErdRest returnValue = new ErdRest();
 
         ErdDto erdDto = erdService.getErdByErdId(id);
-        BeanUtils.copyProperties(erdDto, returnValue);
+        ModelMapper modelMapper = new ModelMapper();
 
-        return returnValue;
+        return modelMapper.map(erdDto, ErdRest.class);
     }
 
     @PostMapping(
@@ -40,17 +39,15 @@ public class ErdController {
             produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
     public ErdRest createErd(@RequestBody ErdDetailsRequestModel erdDetails) throws Exception {
-        ErdRest returnValue = new ErdRest();
 
         if(erdDetails.getName().isEmpty()) throw new ErdServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
-        ErdDto erdDto = new ErdDto();
-        BeanUtils.copyProperties(erdDetails, erdDto);
+        ModelMapper modelMapper = new ModelMapper();
+        ErdDto erdDto = modelMapper.map(erdDetails, ErdDto.class);
 
         ErdDto createdErd = erdService.createErd(erdDto);
-        BeanUtils.copyProperties(createdErd, returnValue);
 
-        return returnValue;
+        return modelMapper.map(createdErd, ErdRest.class);
     }
 
     @PutMapping(path = "/{id}",
@@ -58,17 +55,15 @@ public class ErdController {
             produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
     public ErdRest updateErd(@PathVariable String id, @RequestBody ErdDetailsRequestModel erdDetails) {
-        ErdRest returnValue = new ErdRest();
 
         if(erdDetails.getName().isEmpty()) throw new ErdServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
-        ErdDto erdDto = new ErdDto();
-        BeanUtils.copyProperties(erdDetails, erdDto);
+        ModelMapper modelMapper = new ModelMapper();
+        ErdDto erdDto = modelMapper.map(erdDetails, ErdDto.class);
 
         ErdDto updateErd = erdService.updateErd(id, erdDto);
-        BeanUtils.copyProperties(updateErd, returnValue);
 
-        return returnValue;
+        return modelMapper.map(updateErd, ErdRest.class);
     }
 
     @DeleteMapping(path = "/{id}",
@@ -92,10 +87,10 @@ public class ErdController {
         List<ErdRest> returnValue = new ArrayList<>();
 
         List<ErdDto> erds = erdService.getErds(page, limit);
+        ModelMapper modelMapper = new ModelMapper();
 
         for(ErdDto erdDto : erds) {
-            ErdRest erdModel = new ErdRest();
-            BeanUtils.copyProperties(erdDto, erdModel);
+            ErdRest erdModel = modelMapper.map(erdDto, ErdRest.class);
             returnValue.add(erdModel);
         }
 
