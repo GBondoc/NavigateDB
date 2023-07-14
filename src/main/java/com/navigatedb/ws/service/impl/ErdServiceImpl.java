@@ -34,7 +34,8 @@ public class ErdServiceImpl implements ErdService {
     @Override
     public ErdDto createErd(ErdDto erd) throws ErdServiceException {
 
-        if(erdRepository.findByName(erd.getName()) != null) throw new ErdServiceException("Erd already exists");
+        if(erdRepository.findByName(erd.getName()) != null)
+            throw new ErdServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
 
         ModelMapper modelMapper = new ModelMapper();
         ErdEntity erdEntity = modelMapper.map(erd, ErdEntity.class);
