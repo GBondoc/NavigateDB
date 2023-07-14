@@ -36,16 +36,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto user) throws UserServiceException {
+        if (userRepository.findByEmail(user.getEmail()) != null)
+            throw new UserServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
 
-        if(userRepository.findByEmail(user.getEmail()) != null) throw new UserServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
+        if (userRepository.findByUsername(user.getUsername()) != null)
+            throw new UserServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
 
-        if(userRepository.findByUsername(user.getUsername()) != null) throw new UserServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
-
-        for(int i = 0; i < user.getErds().size(); i++) {
-            ErdDto erd = user.getErds().get(i);
-            erd.setUserDetails(user);
-            erd.setErdId(utils.generateErdId(30));
-            user.getErds().set(i, erd);
+        if (user.getErds() != null) {
+            for (int i = 0; i < user.getErds().size(); i++) {
+                ErdDto erd = user.getErds().get(i);
+                erd.setUserDetails(user);
+                erd.setErdId(utils.generateErdId(30));
+                user.getErds().set(i, erd);
+            }
         }
 
         ModelMapper modelMapper = new ModelMapper();
