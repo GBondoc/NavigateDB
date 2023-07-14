@@ -112,14 +112,6 @@ class UserServiceImplTest {
         verify(utils, times(1)).generateUserId(30);
         verify(userRepository, times(1)).save(any(UserEntity.class));
     }
-/*
-      if (userRepository.findByEmail(user.getEmail()) != null)
-              throw new UserServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
-
-        if (userRepository.findByUsername(user.getUsername()) != null)
-                throw new UserServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
-
-*/
 
     private List<ErdDto> getErdsDto() {
         ErdDto erdDto = new ErdDto();
