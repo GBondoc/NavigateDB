@@ -1,7 +1,6 @@
 package com.navigatedb.ws.ui.controller;
 
 import com.navigatedb.ws.exceptions.ErdServiceException;
-import com.navigatedb.ws.exceptions.UserServiceException;
 import com.navigatedb.ws.service.ErdService;
 import com.navigatedb.ws.service.UserService;
 import com.navigatedb.ws.shared.dto.ErdDto;
@@ -13,9 +12,7 @@ import com.navigatedb.ws.ui.model.response.OperationStatusModel;
 import com.navigatedb.ws.ui.model.response.RequestOperationStatus;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -32,11 +29,13 @@ public class ErdController {
     UserService userService;
 
 
-    @GetMapping(path = "{id}", produces = { MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_JSON_VALUE})
-    public ErdRest getErd(@PathVariable String id) {
+    @GetMapping(path = "/{erdId}", produces = { MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ErdRest getUserErd(@PathVariable String erdId) {
 
-        ErdDto erdDto = erdService.getErdByErdId(id);
+        ErdDto erdDto = erdService.getErd(erdId);
+
         ModelMapper modelMapper = new ModelMapper();
 
         return modelMapper.map(erdDto, ErdRest.class);
