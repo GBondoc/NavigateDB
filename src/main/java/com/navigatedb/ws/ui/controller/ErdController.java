@@ -46,29 +46,30 @@ public class ErdController {
             consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
             produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<?> createErd(@PathVariable String userId, @RequestBody ErdDetailsRequestModel erdDetails) throws ErdServiceException {
+    public ErdRest createErd(@PathVariable String userId, @RequestBody ErdDetailsRequestModel erdDetails) throws ErdServiceException {
 
-        try {
-            if (erdDetails.getName().isEmpty())
-                throw new ErdServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+        if (erdDetails.getName().isEmpty())
+            throw new ErdServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
-            UserDto user = userService.getUserByUserId(userId);
+        UserDto user = userService.getUserByUserId(userId);
 
-            ErdDto newErd = new ErdDto();
-            newErd.setName(erdDetails.getName());
+        if(user == null)
+            throw new ErdServiceException(ErrorMessages.INTERNAL_SERVER_ERROR.getErrorMessage());
 
-            newErd.setUserDetails(user);
+        ErdDto newErd = new ErdDto();
+        newErd.setName(erdDetails.getName());
 
-            ErdDto savedErd = erdService.createErd(newErd);
+        newErd.setUserDetails(user);
 
-            user.getErds().add(savedErd);
+        ErdDto savedErd = erdService.createErd(newErd);
 
-            userService.updateUser(userId, user);
+        user.getErds().add(savedErd);
 
-            return ResponseEntity.ok().build();
-        } catch (UserServiceException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occured: " + e.getMessage());
-        }
+        userService.updateUser(userId, user);
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(savedErd, ErdRest.class);
     }
 
     @PutMapping(path = "/{id}",
