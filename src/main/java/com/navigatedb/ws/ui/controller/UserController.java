@@ -116,16 +116,4 @@ public class UserController {
         return returnValue;
     }
 
-    @GetMapping(path = "/{userId}/erds/{erdId}", produces = { MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_JSON_VALUE}
-    )
-    public ErdRest getUserErd(@PathVariable String erdId) {
-
-        ErdDto erdDto = erdService.getErd(erdId);
-
-        ModelMapper modelMapper = new ModelMapper();
-
-        return modelMapper.map(erdDto, ErdRest.class);
-    }
-
 }

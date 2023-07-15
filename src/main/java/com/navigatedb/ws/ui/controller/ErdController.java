@@ -32,11 +32,13 @@ public class ErdController {
     UserService userService;
 
 
-    @GetMapping(path = "{id}", produces = { MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_JSON_VALUE})
-    public ErdRest getErd(@PathVariable String id) {
+    @GetMapping(path = "/{erdId}", produces = { MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ErdRest getUserErd(@PathVariable String erdId) {
 
-        ErdDto erdDto = erdService.getErdByErdId(id);
+        ErdDto erdDto = erdService.getErd(erdId);
+
         ModelMapper modelMapper = new ModelMapper();
 
         return modelMapper.map(erdDto, ErdRest.class);
