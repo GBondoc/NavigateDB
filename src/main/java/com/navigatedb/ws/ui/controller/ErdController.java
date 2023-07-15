@@ -1,8 +1,11 @@
 package com.navigatedb.ws.ui.controller;
 
 import com.navigatedb.ws.exceptions.ErdServiceException;
+import com.navigatedb.ws.exceptions.UserServiceException;
 import com.navigatedb.ws.service.ErdService;
+import com.navigatedb.ws.service.UserService;
 import com.navigatedb.ws.shared.dto.ErdDto;
+import com.navigatedb.ws.shared.dto.UserDto;
 import com.navigatedb.ws.ui.model.request.ErdDetailsRequestModel;
 import com.navigatedb.ws.ui.model.response.ErdRest;
 import com.navigatedb.ws.ui.model.response.ErrorMessages;
@@ -10,18 +13,23 @@ import com.navigatedb.ws.ui.model.response.OperationStatusModel;
 import com.navigatedb.ws.ui.model.response.RequestOperationStatus;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("erds")
+@RequestMapping("users/{userId}/erds")
 public class ErdController {
 
     @Autowired
     ErdService erdService;
+
+    @Autowired
+    UserService userService;
 
 
     @GetMapping(path = "{id}", produces = { MediaType.APPLICATION_XML_VALUE,
@@ -38,16 +46,29 @@ public class ErdController {
             consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
             produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
-    public ErdRest createErd(@RequestBody ErdDetailsRequestModel erdDetails) throws ErdServiceException {
+    public ResponseEntity<?> createErd(@PathVariable String userId, @RequestBody ErdDetailsRequestModel erdDetails) throws ErdServiceException {
 
-        if(erdDetails.getName().isEmpty()) throw new ErdServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+        try {
+            if (erdDetails.getName().isEmpty())
+                throw new ErdServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
-        ModelMapper modelMapper = new ModelMapper();
-        ErdDto erdDto = modelMapper.map(erdDetails, ErdDto.class);
+            UserDto user = userService.getUserByUserId(userId);
 
-        ErdDto createdErd = erdService.createErd(erdDto);
+            ErdDto newErd = new ErdDto();
+            newErd.setName(erdDetails.getName());
 
-        return modelMapper.map(createdErd, ErdRest.class);
+            newErd.setUserDetails(user);
+
+            ErdDto savedErd = erdService.createErd(newErd);
+
+            user.getErds().add(savedErd);
+
+            userService.updateUser(userId, user);
+
+            return ResponseEntity.ok().build();
+        } catch (UserServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occured: " + e.getMessage());
+        }
     }
 
     @PutMapping(path = "/{id}",
