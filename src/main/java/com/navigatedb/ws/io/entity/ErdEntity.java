@@ -1,6 +1,5 @@
 package com.navigatedb.ws.io.entity;
 
-import com.navigatedb.ws.shared.dto.UserDto;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
