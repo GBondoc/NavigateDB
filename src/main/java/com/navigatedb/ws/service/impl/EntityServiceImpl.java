@@ -12,7 +12,7 @@ public class EntityServiceImpl implements EntityService {
     @Autowired
     EntityRepository entityRepository;
 
-    EntityDto createEntity(EntityDto entity) {
+    public EntityDto createEntity(EntityDto entity) {
         return null;
     }
 
