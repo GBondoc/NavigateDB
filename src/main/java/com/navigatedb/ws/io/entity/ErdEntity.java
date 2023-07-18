@@ -3,6 +3,7 @@ package com.navigatedb.ws.io.entity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity(name="erds")
 public class ErdEntity implements Serializable {
@@ -21,6 +22,9 @@ public class ErdEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "users_id")
     private UserEntity userDetails;
+
+    @OneToMany(mappedBy = "erdDetails", cascade = CascadeType.ALL)
+    List<EntityEntity> entities;
 
     public long getId() {
         return id;
@@ -52,5 +56,13 @@ public class ErdEntity implements Serializable {
 
     public void setUserDetails(UserEntity userDetails) {
         this.userDetails = userDetails;
+    }
+
+    public List<EntityEntity> getEntities() {
+        return entities;
+    }
+
+    public void setEntities(List<EntityEntity> entities) {
+        this.entities = entities;
     }
 }

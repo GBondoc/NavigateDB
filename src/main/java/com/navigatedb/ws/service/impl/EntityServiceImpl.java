@@ -16,5 +16,10 @@ public class EntityServiceImpl implements EntityService {
         return null;
     }
 
+    @Override
+    public EntityDto getEntity(String entityId) {
+        return null;
+    }
+
 
 }
