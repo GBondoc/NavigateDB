@@ -1,6 +1,7 @@
 package com.navigatedb.ws.shared.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ErdDto implements Serializable {
 
@@ -9,6 +10,7 @@ public class ErdDto implements Serializable {
     private String erdId;
     private String name;
     private UserDto userDetails;
+    private List<EntityDto> entities;
 
     public long getId() {
         return id;
@@ -40,5 +42,13 @@ public class ErdDto implements Serializable {
 
     public void setUserDetails(UserDto userDetails) {
         this.userDetails = userDetails;
+    }
+
+    public List<EntityDto> getEntities() {
+        return entities;
+    }
+
+    public void setEntities(List<EntityDto> entities) {
+        this.entities = entities;
     }
 }

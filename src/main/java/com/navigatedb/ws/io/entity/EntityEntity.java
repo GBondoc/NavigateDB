@@ -21,6 +21,10 @@ public class EntityEntity implements Serializable {
     @Column(nullable = false)
     private long rowCount;
 
+    @ManyToOne
+    @JoinColumn(name = "erds_id")
+    private ErdEntity erdDetails;
+
     public long getId() {
         return id;
     }
@@ -51,5 +55,13 @@ public class EntityEntity implements Serializable {
 
     public void setRowCount(long rowCount) {
         this.rowCount = rowCount;
+    }
+
+    public ErdEntity getErdDetails() {
+        return erdDetails;
+    }
+
+    public void setErdDetails(ErdEntity erdDetails) {
+        this.erdDetails = erdDetails;
     }
 }

@@ -9,6 +9,7 @@ public class EntityDto implements Serializable {
     private String entityId;
     private String name;
     private long rowCount;
+    private ErdDto erdDetails;
 
     public long getId() {
         return id;
@@ -40,5 +41,13 @@ public class EntityDto implements Serializable {
 
     public void setRowCount(long rowCount) {
         this.rowCount = rowCount;
+    }
+
+    public ErdDto getErdDetails() {
+        return erdDetails;
+    }
+
+    public void setErdDetails(ErdDto erdDetails) {
+        this.erdDetails = erdDetails;
     }
 }
