@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EntityRepository extends PagingAndSortingRepository<EntityEntity, Long>, CrudRepository<EntityEntity, Long> {
-
+    EntityEntity findByName(String name);
+    EntityEntity findByEntityId(String entityId);
 }

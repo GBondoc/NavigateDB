@@ -49,8 +49,33 @@ public class EntityController {
                                    @PathVariable String erdId,
                                    @RequestBody EntityDetailsRequestModel entityDetails) {
 
-        return null;
+        if(entityDetails.getName().isEmpty())
+            throw new EntityServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
+        UserDto user = userService.getUserByUserId(userId);
+
+        if(user == null)
+            throw new EntityServiceException(ErrorMessages.INTERNAL_SERVER_ERROR.getErrorMessage());
+
+        ErdDto erd = erdService.getErdByErdId(erdId);
+
+        if(erd == null || erd.getUserDetails().getUserId() != user.getUserId())
+            throw new EntityServiceException(ErrorMessages.INTERNAL_SERVER_ERROR.getErrorMessage());
+
+        EntityDto entity = new EntityDto();
+        entity.setName(entityDetails.getName());
+        entity.setRowCount(entityDetails.getRowCount());
+        entity.setErdDetails(erd);
+
+        EntityDto savedEntity = entityService.createEntity(entity);
+
+        erd.getEntities().add(savedEntity);
+
+        erdService.updateErd(erdId, erd);
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(savedEntity, EntityRest.class);
     }
 
 }
