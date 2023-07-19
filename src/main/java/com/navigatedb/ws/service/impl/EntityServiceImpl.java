@@ -49,4 +49,32 @@ public class EntityServiceImpl implements EntityService {
         return modelMapper.map(entityEntity, EntityDto.class);
     }
 
+    @Override
+    public EntityDto updateEntity(String entityId, EntityDto entity) {
+
+        EntityEntity entityEntity = entityRepository.findByEntityId(entityId);
+
+        if(entityEntity == null)
+            throw new EntityServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+
+        entityEntity.setName(entity.getName());
+        entityEntity.setRowCount(entity.getRowCount());
+
+        EntityEntity updatedEntityDetails = entityRepository.save(entityEntity);
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(updatedEntityDetails, EntityDto.class);
+    }
+
+    @Override
+    public void deleteEntity(String entityId) {
+        EntityEntity entityEntity = entityRepository.findByEntityId(entityId);
+
+        if(entityEntity == null)
+            throw new EntityServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+
+        entityRepository.delete(entityEntity);
+    }
+
 }

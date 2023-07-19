@@ -82,9 +82,9 @@ public class ErdController {
         ModelMapper modelMapper = new ModelMapper();
         ErdDto erdDto = modelMapper.map(erdDetails, ErdDto.class);
 
-        ErdDto updateErd = erdService.updateErd(id, erdDto);
+        ErdDto updatedErd = erdService.updateErd(id, erdDto);
 
-        return modelMapper.map(updateErd, ErdRest.class);
+        return modelMapper.map(updatedErd, ErdRest.class);
     }
 
     @DeleteMapping(path = "/{id}",

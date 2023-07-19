@@ -11,6 +11,8 @@ import com.navigatedb.ws.shared.dto.UserDto;
 import com.navigatedb.ws.ui.model.request.EntityDetailsRequestModel;
 import com.navigatedb.ws.ui.model.response.EntityRest;
 import com.navigatedb.ws.ui.model.response.ErrorMessages;
+import com.navigatedb.ws.ui.model.response.OperationStatusModel;
+import com.navigatedb.ws.ui.model.response.RequestOperationStatus;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -76,6 +78,39 @@ public class EntityController {
         ModelMapper modelMapper = new ModelMapper();
 
         return modelMapper.map(savedEntity, EntityRest.class);
+    }
+
+    @PutMapping(path = "/{id}",
+            consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
+    )
+    public EntityRest updateEntity(@PathVariable String id,
+                                   @RequestBody EntityDetailsRequestModel entityDetails) throws EntityServiceException {
+
+        if(entityDetails.getName().isEmpty())
+            throw new EntityServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+
+        ModelMapper modelMapper = new ModelMapper();
+        EntityDto entityDto = modelMapper.map(entityDetails, EntityDto.class);
+
+        EntityDto updateEntity = entityService.updateEntity(id, entityDto);
+
+        return modelMapper.map(updateEntity, EntityRest.class);
+    }
+
+    @DeleteMapping(path = "/{id}",
+            produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
+    )
+    public OperationStatusModel deleteEntity(@PathVariable String id) {
+
+        OperationStatusModel returnValue = new OperationStatusModel();
+        returnValue.setOperationName(RequestOperationName.DELETE.name());
+
+        entityService.deleteEntity(id);
+
+        returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+
+        return returnValue;
     }
 
 }
