@@ -18,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("users/{userId}/erds/{erdId}/entities")
 public class EntityController {
@@ -109,6 +112,22 @@ public class EntityController {
         entityService.deleteEntity(id);
 
         returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+
+        return returnValue;
+    }
+
+    @GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public List<EntityRest> getEntities(@RequestParam(value = "page", defaultValue = "0") int page,
+                                        @RequestParam(value = "limit", defaultValue = "50") int limit) {
+        List<EntityRest> returnValue = new ArrayList<>();
+
+        List<EntityDto> entities = entityService.getEntities(page, limit);
+        ModelMapper modelMapper = new ModelMapper();
+
+        for(EntityDto entityDto : entities) {
+            EntityRest entityModel = modelMapper.map(entityDto, EntityRest.class);
+            returnValue.add(entityModel);
+        }
 
         return returnValue;
     }

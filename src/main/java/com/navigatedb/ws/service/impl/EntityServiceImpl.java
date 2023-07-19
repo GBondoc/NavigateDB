@@ -9,7 +9,13 @@ import com.navigatedb.ws.shared.dto.EntityDto;
 import com.navigatedb.ws.ui.model.response.ErrorMessages;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EntityServiceImpl implements EntityService {
@@ -75,6 +81,26 @@ public class EntityServiceImpl implements EntityService {
             throw new EntityServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 
         entityRepository.delete(entityEntity);
+    }
+
+    @Override
+    public List<EntityDto> getEntities(int page, int limit) {
+        List<EntityDto> returnValue = new ArrayList<>();
+
+        if(page > 0) page = page - 1;
+
+        Pageable pageableRequest = PageRequest.of(page, limit);
+
+        Page<EntityEntity> entitiesPage = entityRepository.findAll(pageableRequest);
+        List<EntityEntity> entities = entitiesPage.getContent();
+        ModelMapper modelMapper = new ModelMapper();
+
+        for(EntityEntity entityEntity : entities) {
+            EntityDto entityDto = modelMapper.map(entityEntity, EntityDto.class);
+            returnValue.add(entityDto);
+        }
+
+        return returnValue;
     }
 
 }
