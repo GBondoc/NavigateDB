@@ -18,6 +18,11 @@ public class Utils {
     public String generateErdId(int length) {
         return generateRandomString(length);
     }
+
+    public String generateEntityId(int length) {
+        return generateRandomString(length);
+    }
+
     private String generateRandomString(int length) {
         StringBuilder returnValue = new StringBuilder(length);
 
