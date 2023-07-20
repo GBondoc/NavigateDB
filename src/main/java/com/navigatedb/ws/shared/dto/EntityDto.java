@@ -1,6 +1,7 @@
 package com.navigatedb.ws.shared.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class EntityDto implements Serializable {
 
@@ -10,6 +11,7 @@ public class EntityDto implements Serializable {
     private String name;
     private long rowCount;
     private ErdDto erdDetails;
+    private List<TupleDto> tuples;
 
     public long getId() {
         return id;
@@ -49,5 +51,13 @@ public class EntityDto implements Serializable {
 
     public void setErdDetails(ErdDto erdDetails) {
         this.erdDetails = erdDetails;
+    }
+
+    public List<TupleDto> getTuples() {
+        return tuples;
+    }
+
+    public void setTuples(List<TupleDto> tuples) {
+        this.tuples = tuples;
     }
 }
