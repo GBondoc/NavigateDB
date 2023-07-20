@@ -3,6 +3,7 @@ package com.navigatedb.ws.io.entity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity(name="entities")
 public class EntityEntity implements Serializable {
@@ -24,6 +25,9 @@ public class EntityEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "erds_id")
     private ErdEntity erdDetails;
+
+    @OneToMany(mappedBy = "entityDetails", cascade = CascadeType.ALL)
+    List<TupleEntity> tuples;
 
     public long getId() {
         return id;
@@ -63,5 +67,13 @@ public class EntityEntity implements Serializable {
 
     public void setErdDetails(ErdEntity erdDetails) {
         this.erdDetails = erdDetails;
+    }
+
+    public List<TupleEntity> getTuples() {
+        return tuples;
+    }
+
+    public void setTuples(List<TupleEntity> tuples) {
+        this.tuples = tuples;
     }
 }
