@@ -10,6 +10,7 @@ public class TupleDto implements Serializable {
     private String constraintType;
     private String columnName;
     private String dataType;
+    private EntityDto entity;
 
     public long getId() {
         return id;
@@ -49,5 +50,13 @@ public class TupleDto implements Serializable {
 
     public void setDataType(String dataType) {
         this.dataType = dataType;
+    }
+
+    public EntityDto getEntity() {
+        return entity;
+    }
+
+    public void setEntity(EntityDto entity) {
+        this.entity = entity;
     }
 }

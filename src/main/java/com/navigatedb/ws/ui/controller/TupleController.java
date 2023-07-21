@@ -1,8 +1,19 @@
 package com.navigatedb.ws.ui.controller;
 
+import com.navigatedb.ws.exceptions.TupleServiceException;
+import com.navigatedb.ws.service.EntityService;
+import com.navigatedb.ws.service.ErdService;
+import com.navigatedb.ws.service.TupleService;
+import com.navigatedb.ws.service.UserService;
+import com.navigatedb.ws.shared.dto.EntityDto;
+import com.navigatedb.ws.shared.dto.ErdDto;
+import com.navigatedb.ws.shared.dto.TupleDto;
+import com.navigatedb.ws.shared.dto.UserDto;
 import com.navigatedb.ws.ui.model.request.TupleDetailsRequestModel;
+import com.navigatedb.ws.ui.model.response.ErrorMessages;
 import com.navigatedb.ws.ui.model.response.OperationStatusModel;
 import com.navigatedb.ws.ui.model.response.TupleRest;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +23,17 @@ import org.springframework.web.bind.annotation.*;
 public class TupleController {
 
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    ErdService erdService;
+
+    @Autowired
+    EntityService entityService;
+
+    @Autowired
+    TupleService tupleService;
 
 
     @GetMapping(path = "/{tupleId}",
@@ -20,7 +42,11 @@ public class TupleController {
     )
     public TupleRest getEntityTuple(@PathVariable String tupleId) {
 
-        return null;
+        TupleDto tupleDto = tupleService.getTuple(tupleId);
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(tupleDto, TupleRest.class);
     }
 
     @PostMapping(
@@ -32,7 +58,44 @@ public class TupleController {
                                  @PathVariable String entityId,
                                  @RequestBody TupleDetailsRequestModel tupleDetails) {
 
-        return null;
+        if(tupleDetails.getConstraintType().isEmpty()
+        || tupleDetails.getColumnName().isEmpty()
+        || tupleDetails.getDataType().isEmpty())
+            throw new TupleServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+
+        UserDto user = userService.getUserByUserId(userId);
+
+        if(user == null)
+            throw new TupleServiceException(ErrorMessages.INTERNAL_SERVER_ERROR.getErrorMessage());
+
+        ErdDto erd = erdService.getErdByErdId(erdId);
+
+        if(erd == null
+        || !erd.getUserDetails().getUserId().equals(user.getUserId()))
+            throw new TupleServiceException(ErrorMessages.INTERNAL_SERVER_ERROR.getErrorMessage());
+
+        EntityDto entity = entityService.getEntity(entityId);
+
+        if(entity == null
+        || !entity.getErdDetails().getErdId().equals(erd.getErdId()))
+            throw new TupleServiceException(ErrorMessages.INTERNAL_SERVER_ERROR.getErrorMessage());
+
+        TupleDto newTuple = new TupleDto();
+        newTuple.setConstraintType(tupleDetails.getConstraintType());
+        newTuple.setColumnName(tupleDetails.getColumnName());
+        newTuple.setDataType(tupleDetails.getDataType());
+
+        newTuple.setEntity(entity);
+
+        TupleDto savedTuple = tupleService.createTuple(newTuple);
+
+        entity.getTuples().add(savedTuple);
+
+        entityService.updateEntity(entityId, entity);
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(savedTuple, TupleRest.class);
     }
 
     @PutMapping(path = "/{tupleId}",
