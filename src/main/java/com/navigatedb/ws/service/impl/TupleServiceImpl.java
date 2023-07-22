@@ -1,7 +1,9 @@
 package com.navigatedb.ws.service.impl;
 
 import com.navigatedb.ws.exceptions.TupleServiceException;
+import com.navigatedb.ws.io.entity.EntityEntity;
 import com.navigatedb.ws.io.entity.TupleEntity;
+import com.navigatedb.ws.repository.EntityRepository;
 import com.navigatedb.ws.repository.TupleRepository;
 import com.navigatedb.ws.service.TupleService;
 import com.navigatedb.ws.shared.Utils;
@@ -18,22 +20,41 @@ public class TupleServiceImpl implements TupleService {
     TupleRepository tupleRepository;
 
     @Autowired
+    EntityRepository entityRepository;
+
+    @Autowired
     Utils utils;
 
     @Override
     public TupleDto createTuple(TupleDto tuple) throws TupleServiceException {
-
-        if(tupleRepository.findByColumnName(tuple.getColumnName()) != null)
+        // Check if the tuple with the same columnName already exists
+        if (tupleRepository.findByColumnName(tuple.getColumnName()) != null) {
             throw new TupleServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
+        }
 
+        // Fetch the corresponding EntityEntity from the database
+        EntityEntity entityEntity = entityRepository.findById(tuple.getEntity().getId()).orElse(null);
+
+        // Check if the EntityEntity exists
+        if (entityEntity == null) {
+            throw new TupleServiceException("EntityEntity with id " + tuple.getEntity().getId() + " not found.");
+        }
+
+        // Map the TupleDto to TupleEntity
         ModelMapper modelMapper = new ModelMapper();
         TupleEntity tupleEntity = modelMapper.map(tuple, TupleEntity.class);
 
+        // Set the associated EntityEntity
+        tupleEntity.setEntityDetails(entityEntity);
+
+        // Generate the tupleId and set it
         String publicTupleId = utils.generateTupleId(30);
         tupleEntity.setTupleId(publicTupleId);
 
+        // Save the TupleEntity and get the stored TupleEntity
         TupleEntity storedTupleDetails = tupleRepository.save(tupleEntity);
 
+        // Map the stored TupleEntity back to TupleDto and return it
         return modelMapper.map(storedTupleDetails, TupleDto.class);
     }
 
