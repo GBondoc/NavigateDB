@@ -73,11 +73,36 @@ public class TupleServiceImpl implements TupleService {
 
     @Override
     public TupleDto updateTuple(String tupleId, TupleDto tuple) {
-        return null;
+
+        TupleEntity tupleEntity = tupleRepository.findByTupleId(tupleId);
+
+        if(tupleEntity == null)
+            throw new TupleServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+
+        if(tuple.getConstraintType() != null)
+            tupleEntity.setConstraintType(tuple.getConstraintType());
+
+        if(tuple.getColumnName() != null)
+            tupleEntity.setColumnName(tuple.getColumnName());
+
+        if(tuple.getDataType() != null)
+            tupleEntity.setDataType(tuple.getDataType());
+
+        TupleEntity updatedTupleDetails = tupleRepository.save(tupleEntity);
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(updatedTupleDetails, TupleDto.class);
     }
 
     @Override
     public void deleteTuple(String tupleId) {
 
+        TupleEntity tupleEntity = tupleRepository.findByTupleId(tupleId);
+
+        if(tupleEntity == null)
+            throw new TupleServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+
+        tupleRepository.delete(tupleEntity);
     }
 }
