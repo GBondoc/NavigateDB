@@ -98,5 +98,11 @@ public class TupleServiceImpl implements TupleService {
     @Override
     public void deleteTuple(String tupleId) {
 
+        TupleEntity tupleEntity = tupleRepository.findByTupleId(tupleId);
+
+        if(tupleEntity == null)
+            throw new TupleServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+
+        tupleRepository.delete(tupleEntity);
     }
 }

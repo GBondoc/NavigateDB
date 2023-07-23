@@ -12,6 +12,7 @@ import com.navigatedb.ws.shared.dto.UserDto;
 import com.navigatedb.ws.ui.model.request.TupleDetailsRequestModel;
 import com.navigatedb.ws.ui.model.response.ErrorMessages;
 import com.navigatedb.ws.ui.model.response.OperationStatusModel;
+import com.navigatedb.ws.ui.model.response.RequestOperationStatus;
 import com.navigatedb.ws.ui.model.response.TupleRest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,7 +119,14 @@ public class TupleController {
     )
     public OperationStatusModel deleteTuple(@PathVariable String tupleId) {
 
-        return null;
+        OperationStatusModel returnValue = new OperationStatusModel();
+        returnValue.setOperationName(RequestOperationName.DELETE.name());
+
+        tupleService.deleteTuple(tupleId);
+
+        returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+
+        return returnValue;
     }
 
 }
