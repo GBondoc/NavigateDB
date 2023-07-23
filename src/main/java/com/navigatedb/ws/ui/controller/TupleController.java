@@ -105,7 +105,12 @@ public class TupleController {
     public TupleRest updateTuple(@PathVariable String tupleId,
                                  @RequestBody TupleDetailsRequestModel tupleDetails) {
 
-        return null;
+        ModelMapper modelMapper = new ModelMapper();
+        TupleDto tupleDto = modelMapper.map(tupleDetails, TupleDto.class);
+
+        TupleDto updateTuple = tupleService.updateTuple(tupleId, tupleDto);
+
+        return modelMapper.map(updateTuple, TupleRest.class);
     }
 
     @DeleteMapping(path = "/{tupleId}",
