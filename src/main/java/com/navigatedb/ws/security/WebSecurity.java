@@ -9,9 +9,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -48,6 +50,7 @@ public class WebSecurity {
                     try {
                         authorize
                                 .requestMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
+                                //.requestMatchers(new AntPathRequestMatcher(SecurityConstants.H2_CONSOLE)).permitAll()
                                 .anyRequest().authenticated()
                                 .and()
                                 .authenticationManager(authenticationManager)
@@ -59,6 +62,9 @@ public class WebSecurity {
                         throw new RuntimeException(e);
                     }
                 });
+
+        // For h2-console testing purposes
+        // http.headers((headers) -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
 
         return http.build();
     }
