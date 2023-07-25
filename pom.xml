@@ -8,11 +8,15 @@
         <version>3.1.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.navigatedb.ws</groupId>
     <artifactId>NavigateDB</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+
     <name>NavigateDB</name>
     <description>NavigateDB</description>
+
     <properties>
         <java.version>20</java.version>
     </properties>
@@ -51,6 +55,13 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-tomcat -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
         </dependency>
 
