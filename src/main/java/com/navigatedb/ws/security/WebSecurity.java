@@ -45,23 +45,20 @@ public class WebSecurity {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager);
         authenticationFilter.setFilterProcessesUrl("/users/login");
 
+
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((authorize) -> {
-                    try {
-                        authorize
-                                .requestMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
-                                //.requestMatchers(new AntPathRequestMatcher(SecurityConstants.H2_CONSOLE)).permitAll()
-                                .anyRequest().authenticated()
-                                .and()
-                                .authenticationManager(authenticationManager)
-                                .addFilter(authenticationFilter)
-                                .addFilter(new AuthorizationFilter(authenticationManager))
-                                .sessionManagement((session) -> session
-                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
+                .authorizeHttpRequests((auth) -> {
+                    auth.requestMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll();
+                    //auth.requestMatchers(new AntPathRequestMatcher(SecurityConstants.H2_CONSOLE)).permitAll();
+                    auth.anyRequest().authenticated();
+                })
+                .authenticationManager(authenticationManager)
+                .addFilter(authenticationFilter)
+                .addFilter(new AuthorizationFilter(authenticationManager))
+                .sessionManagement((session) -> {
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 });
+
 
         // For h2-console testing purposes
         // http.headers((headers) -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
