@@ -15,15 +15,19 @@ public class Utils {
         return generateRandomString(length);
     }
 
+    public String generateRelationId(int length) {
+        return generateRandomString(length);
+    }
+
     public String generateErdId(int length) {
         return generateRandomString(length);
     }
 
-    public String generateTupleId(int length) {
+    public String generateEntityId(int length) {
         return generateRandomString(length);
     }
 
-    public String generateEntityId(int length) {
+    public String generateTupleId(int length) {
         return generateRandomString(length);
     }
 
