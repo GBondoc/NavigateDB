@@ -1,14 +1,11 @@
 package com.navigatedb.ws.ui.controller;
 
 import com.navigatedb.ws.exceptions.UserServiceException;
-import com.navigatedb.ws.service.ErdService;
 import com.navigatedb.ws.service.UserService;
-import com.navigatedb.ws.shared.dto.ErdDto;
 import com.navigatedb.ws.shared.dto.UserDto;
 import com.navigatedb.ws.ui.model.request.UserDetailsRequestModel;
 import com.navigatedb.ws.ui.model.response.*;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +19,6 @@ public class UserController {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    ErdService erdService;
 
     @GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_JSON_VALUE}
@@ -100,20 +94,5 @@ public class UserController {
         return returnValue;
     }
 
-    @GetMapping(path = "/{id}/erds", produces = { MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_JSON_VALUE}
-    )
-    public List<ErdRest> getUserErds(@PathVariable String id) {
-        List<ErdRest> returnValue = new ArrayList<>();
-
-        List<ErdDto> erdsDto = erdService.getErds(id);
-
-        if(erdsDto != null && !erdsDto.isEmpty()) {
-            java.lang.reflect.Type listType = new TypeToken<List<ErdRest>>() {}.getType();
-            returnValue = new ModelMapper().map(erdsDto, listType);
-        }
-
-        return returnValue;
-    }
 
 }
