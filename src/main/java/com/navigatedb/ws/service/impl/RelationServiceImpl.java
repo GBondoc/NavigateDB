@@ -9,7 +9,13 @@ import com.navigatedb.ws.shared.dto.RelationDto;
 import com.navigatedb.ws.ui.model.response.ErrorMessages;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RelationServiceImpl implements RelationService {
@@ -75,5 +81,25 @@ public class RelationServiceImpl implements RelationService {
             throw new RelationServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 
         relationRepository.delete(relationEntity);
+    }
+
+    @Override
+    public List<RelationDto> getRelations(int page, int limit) {
+        List<RelationDto> returnValue = new ArrayList<>();
+
+        if(page > 0) page = page - 1;
+
+        Pageable pageableRequest = PageRequest.of(page, limit);
+
+        Page<RelationEntity> relationsPage = relationRepository.findAll(pageableRequest);
+        List<RelationEntity> relations = relationsPage.getContent();
+        ModelMapper modelMapper = new ModelMapper();
+
+        for(RelationEntity relationEntity : relations) {
+            RelationDto relationDto = modelMapper.map(relationEntity, RelationDto.class);
+            returnValue.add(relationDto);
+        }
+
+        return returnValue;
     }
 }
