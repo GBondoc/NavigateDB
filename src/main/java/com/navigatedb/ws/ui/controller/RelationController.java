@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("relations")
 public class RelationController {
@@ -81,6 +84,23 @@ public class RelationController {
 
         return returnValue;
 
+    }
+
+    @GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public List<RelationRest> getRelations(@RequestParam(value = "page", defaultValue = "0") int page,
+                                           @RequestParam(value = "limit", defaultValue = "50") int limit) {
+
+        List<RelationRest> returnValue = new ArrayList<>();
+
+        List<RelationDto> relations = relationService.getRelations(page, limit);
+        ModelMapper modelMapper = new ModelMapper();
+
+        for(RelationDto relationDto : relations) {
+            RelationRest relationModel = modelMapper.map(relationDto, RelationRest.class);
+            returnValue.add(relationModel);
+        }
+
+        return returnValue;
     }
 
 }
