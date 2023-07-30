@@ -11,7 +11,13 @@ import com.navigatedb.ws.shared.dto.TupleDto;
 import com.navigatedb.ws.ui.model.response.ErrorMessages;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TupleServiceImpl implements TupleService {
@@ -104,5 +110,25 @@ public class TupleServiceImpl implements TupleService {
             throw new TupleServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 
         tupleRepository.delete(tupleEntity);
+    }
+
+    @Override
+    public List<TupleDto> getTuples(int page, int limit) {
+        List<TupleDto> returnValue = new ArrayList<>();
+
+        if(page > 0) page = page - 1;
+
+        Pageable pageableRequest = PageRequest.of(page, limit);
+
+        Page<TupleEntity> tuplesPage = tupleRepository.findAll(pageableRequest);
+        List<TupleEntity> tuples = tuplesPage.getContent();
+        ModelMapper modelMapper = new ModelMapper();
+
+        for(TupleEntity tupleEntity : tuples) {
+            TupleDto tupleDto = modelMapper.map(tupleEntity, TupleDto.class);
+            returnValue.add(tupleDto);
+        }
+
+        return returnValue;
     }
 }

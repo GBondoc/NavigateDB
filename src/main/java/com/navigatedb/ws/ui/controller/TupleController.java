@@ -19,6 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("users/{userId}/erds/{erdId}/entities/{entityId}/tuples")
 public class TupleController {
@@ -128,5 +131,23 @@ public class TupleController {
 
         return returnValue;
     }
+
+    @GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public List<TupleRest> getTuples(@RequestParam(value = "page", defaultValue = "0") int page,
+                                     @RequestParam(value = "limit", defaultValue = "50") int limit) {
+
+        List<TupleRest> returnValue = new ArrayList<>();
+
+        List<TupleDto> tuples = tupleService.getTuples(page, limit);
+        ModelMapper modelMapper = new ModelMapper();
+
+        for(TupleDto tupleDto : tuples) {
+            TupleRest tupleModel = modelMapper.map(tupleDto, TupleRest.class);
+            returnValue.add(tupleModel);
+        }
+
+        return returnValue;
+    }
+
 
 }
