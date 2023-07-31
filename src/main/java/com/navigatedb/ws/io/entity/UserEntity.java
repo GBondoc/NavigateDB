@@ -103,4 +103,12 @@ public class UserEntity implements Serializable {
     public void setErds(List<ErdEntity> erds) {
         this.erds = erds;
     }
+
+    public Collection<RoleEntity> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<RoleEntity> roles) {
+        this.roles = roles;
+    }
 }
