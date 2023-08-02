@@ -29,6 +29,9 @@ public class EntityEntity implements Serializable {
     @OneToMany(mappedBy = "entityDetails", cascade = CascadeType.ALL)
     List<TupleEntity> tuples;
 
+    @OneToMany(mappedBy = "entityDetails", cascade = CascadeType.ALL)
+    List<EntityRelationEntity> entityRelations;
+
     public long getId() {
         return id;
     }
@@ -75,5 +78,13 @@ public class EntityEntity implements Serializable {
 
     public void setTuples(List<TupleEntity> tuples) {
         this.tuples = tuples;
+    }
+
+    public List<EntityRelationEntity> getEntityRelations() {
+        return entityRelations;
+    }
+
+    public void setEntityRelations(List<EntityRelationEntity> entityRelations) {
+        this.entityRelations = entityRelations;
     }
 }

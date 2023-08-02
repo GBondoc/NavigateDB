@@ -12,6 +12,7 @@ public class EntityDto implements Serializable {
     private long rowCount;
     private ErdDto erdDetails;
     private List<TupleDto> tuples;
+    private List<EntityRelationDto> entityRelations;
 
     public long getId() {
         return id;
@@ -59,5 +60,13 @@ public class EntityDto implements Serializable {
 
     public void setTuples(List<TupleDto> tuples) {
         this.tuples = tuples;
+    }
+
+    public List<EntityRelationDto> getEntityRelations() {
+        return entityRelations;
+    }
+
+    public void setEntityRelations(List<EntityRelationDto> entityRelations) {
+        this.entityRelations = entityRelations;
     }
 }
