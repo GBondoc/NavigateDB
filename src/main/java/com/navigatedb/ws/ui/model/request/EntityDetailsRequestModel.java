@@ -7,6 +7,7 @@ public class EntityDetailsRequestModel {
     private String name;
     private long rowCount;
     private List<TupleDetailsRequestModel> tuples;
+    private List<EntityRelationDetailsRequestModel> entityRelations;
 
     public String getName() {
         return name;
@@ -30,5 +31,13 @@ public class EntityDetailsRequestModel {
 
     public void setTuples(List<TupleDetailsRequestModel> tuples) {
         this.tuples = tuples;
+    }
+
+    public List<EntityRelationDetailsRequestModel> getEntityRelations() {
+        return entityRelations;
+    }
+
+    public void setEntityRelations(List<EntityRelationDetailsRequestModel> entityRelations) {
+        this.entityRelations = entityRelations;
     }
 }

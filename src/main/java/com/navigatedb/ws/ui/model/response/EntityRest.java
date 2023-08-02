@@ -8,6 +8,7 @@ public class EntityRest {
     private String name;
     private long rowCount;
     private List<TupleRest> tuples;
+    private List<EntityRelationRest> entityRelations;
 
     public String getEntityId() {
         return entityId;
@@ -39,5 +40,13 @@ public class EntityRest {
 
     public void setTuples(List<TupleRest> tuples) {
         this.tuples = tuples;
+    }
+
+    public List<EntityRelationRest> getEntityRelations() {
+        return entityRelations;
+    }
+
+    public void setEntityRelations(List<EntityRelationRest> entityRelations) {
+        this.entityRelations = entityRelations;
     }
 }

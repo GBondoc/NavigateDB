@@ -12,6 +12,8 @@ public class EntityRelationDto implements Serializable {
 
     private String channel;
 
+    private EntityDto entityDetails;
+
     public long getId() {
         return id;
     }
@@ -34,5 +36,13 @@ public class EntityRelationDto implements Serializable {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public EntityDto getEntityDetails() {
+        return entityDetails;
+    }
+
+    public void setEntityDetails(EntityDto entityDetails) {
+        this.entityDetails = entityDetails;
     }
 }

@@ -1,10 +1,7 @@
 package com.navigatedb.ws.io.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity(name = "entityrelations")
 public class EntityRelationEntity {
@@ -20,6 +17,10 @@ public class EntityRelationEntity {
 
     @Column(nullable = false)
     private String channel;
+
+    @ManyToOne
+    @JoinColumn(name = "entities_id")
+    private EntityEntity entityDetails;
 
     public long getId() {
         return id;
@@ -43,5 +44,13 @@ public class EntityRelationEntity {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public EntityEntity getEntityDetails() {
+        return entityDetails;
+    }
+
+    public void setEntityDetails(EntityEntity entityDetails) {
+        this.entityDetails = entityDetails;
     }
 }
