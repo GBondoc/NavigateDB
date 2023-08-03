@@ -14,6 +14,8 @@ public class EntityRelationDto implements Serializable {
 
     private EntityDto entityDetails;
 
+    private RelationDto relationDetails;
+
     public long getId() {
         return id;
     }
@@ -44,5 +46,13 @@ public class EntityRelationDto implements Serializable {
 
     public void setEntityDetails(EntityDto entityDetails) {
         this.entityDetails = entityDetails;
+    }
+
+    public RelationDto getRelationDetails() {
+        return relationDetails;
+    }
+
+    public void setRelationDetails(RelationDto relationDetails) {
+        this.relationDetails = relationDetails;
     }
 }

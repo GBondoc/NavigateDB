@@ -22,6 +22,11 @@ public class EntityRelationEntity {
     @JoinColumn(name = "entities_id")
     private EntityEntity entityDetails;
 
+
+    @ManyToOne
+    @JoinColumn(name = "relations_id")
+    private RelationEntity relationDetails;
+
     public long getId() {
         return id;
     }
@@ -52,5 +57,13 @@ public class EntityRelationEntity {
 
     public void setEntityDetails(EntityEntity entityDetails) {
         this.entityDetails = entityDetails;
+    }
+
+    public RelationEntity getRelationDetails() {
+        return relationDetails;
+    }
+
+    public void setRelationDetails(RelationEntity relationDetails) {
+        this.relationDetails = relationDetails;
     }
 }

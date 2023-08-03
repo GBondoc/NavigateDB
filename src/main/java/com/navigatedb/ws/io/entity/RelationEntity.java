@@ -1,11 +1,9 @@
 package com.navigatedb.ws.io.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity(name="relations")
 public class RelationEntity implements Serializable {
@@ -23,6 +21,9 @@ public class RelationEntity implements Serializable {
 
     @Column(nullable = false)
     private String nullable;
+
+    @OneToMany(mappedBy = "relationDetails", cascade = CascadeType.ALL)
+    List<EntityRelationEntity> entityRelations;
 
     public long getId() {
         return id;
@@ -54,5 +55,13 @@ public class RelationEntity implements Serializable {
 
     public void setNullable(String nullable) {
         this.nullable = nullable;
+    }
+
+    public List<EntityRelationEntity> getEntityRelations() {
+        return entityRelations;
+    }
+
+    public void setEntityRelations(List<EntityRelationEntity> entityRelations) {
+        this.entityRelations = entityRelations;
     }
 }

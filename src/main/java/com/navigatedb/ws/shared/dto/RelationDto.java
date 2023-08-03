@@ -1,6 +1,7 @@
 package com.navigatedb.ws.shared.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class RelationDto implements Serializable {
 
@@ -9,6 +10,7 @@ public class RelationDto implements Serializable {
     private String relationId;
     private String relationType;
     private String nullable;
+    private List<EntityRelationDto> entityRelations;
 
     public long getId() {
         return id;
@@ -40,5 +42,13 @@ public class RelationDto implements Serializable {
 
     public void setNullable(String nullable) {
         this.nullable = nullable;
+    }
+
+    public List<EntityRelationDto> getEntityRelations() {
+        return entityRelations;
+    }
+
+    public void setEntityRelations(List<EntityRelationDto> entityRelations) {
+        this.entityRelations = entityRelations;
     }
 }
