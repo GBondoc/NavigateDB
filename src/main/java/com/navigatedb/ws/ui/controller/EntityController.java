@@ -46,6 +46,18 @@ public class EntityController {
         return modelMapper.map(entityDto, EntityRest.class);
     }
 
+    @GetMapping(path = "/name/{entityName}", produces = { MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_JSON_VALUE}
+    )
+    public EntityRest getEntityByName(@PathVariable String entityName) {
+
+        EntityDto entityDto = entityService.getEntityByName(entityName);
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(entityDto, EntityRest.class);
+    }
+
     @PostMapping(
             consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
             produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}

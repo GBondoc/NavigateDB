@@ -103,4 +103,18 @@ public class EntityServiceImpl implements EntityService {
         return returnValue;
     }
 
+    @Override
+    public EntityDto getEntityByName(String entityName) {
+
+        EntityEntity entityEntity = entityRepository.findByName(entityName);
+
+        if(entityEntity == null)
+            throw new EntityServiceException("Entity with name: " + entityName + " not found");
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(entityEntity, EntityDto.class);
+
+    }
+
 }

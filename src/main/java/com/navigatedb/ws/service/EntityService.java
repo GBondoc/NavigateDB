@@ -10,4 +10,5 @@ public interface EntityService {
     EntityDto updateEntity(String entityId, EntityDto entity);
     void deleteEntity(String entityId);
     List<EntityDto> getEntities(int page, int limit);
+    EntityDto getEntityByName(String entityName);
 }
