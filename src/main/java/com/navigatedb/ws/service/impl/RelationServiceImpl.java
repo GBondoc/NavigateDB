@@ -29,7 +29,7 @@ public class RelationServiceImpl implements RelationService {
     @Override
     public RelationDto createRelation(RelationDto relation) {
 
-        if((relationRepository.findByRelationType(relation.getRelationType()) != null)
+        if((relationRepository.findByRelationTypeAndNullable(relation.getRelationType(), relation.getNullable()) != null)
         && (relationRepository.findByNullable(relation.getNullable()) != null))
             throw new RelationServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
 
@@ -101,5 +101,18 @@ public class RelationServiceImpl implements RelationService {
         }
 
         return returnValue;
+    }
+
+    @Override
+    public RelationDto getRelationByType(String relationName, String nullable) {
+
+        RelationEntity relationEntity = relationRepository.findByRelationTypeAndNullable(relationName, nullable);
+
+        if(relationEntity == null) throw new RelationServiceException("Relation with name: " + relationName + " not found");
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(relationEntity, RelationDto.class);
+
     }
 }

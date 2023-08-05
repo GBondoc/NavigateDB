@@ -10,4 +10,5 @@ public interface RelationService {
     RelationDto updateRelation(String relationId, RelationDto relation);
     void deleteRelation(String relationId);
     List<RelationDto> getRelations(int page, int limit);
+    RelationDto getRelationByType(String relationName, String nullable);
 }
