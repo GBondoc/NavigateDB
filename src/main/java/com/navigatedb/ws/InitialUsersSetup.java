@@ -44,6 +44,10 @@ public class InitialUsersSetup {
         AuthorityEntity deleteAuthority = createAuthority("DELETE_AUTHORITY");
 
         RoleEntity roleUser = createRole("ROLE_USER", Arrays.asList(readAuthority, writeAuthority));
+
+        if(userRepository.findByEmail("admin@test.com") != null)
+            return;
+
         RoleEntity roleAdmin = createRole("ROLE_ADMIN", Arrays.asList(readAuthority, writeAuthority, deleteAuthority));
 
         if(roleAdmin == null) return;
