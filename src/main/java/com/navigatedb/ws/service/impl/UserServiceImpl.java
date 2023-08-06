@@ -3,6 +3,7 @@ package com.navigatedb.ws.service.impl;
 import com.navigatedb.ws.exceptions.UserServiceException;
 import com.navigatedb.ws.io.entity.UserEntity;
 import com.navigatedb.ws.repository.UserRepository;
+import com.navigatedb.ws.security.UserPrincipal;
 import com.navigatedb.ws.service.UserService;
 import com.navigatedb.ws.shared.Utils;
 import com.navigatedb.ws.shared.dto.ErdDto;
@@ -57,6 +58,8 @@ public class UserServiceImpl implements UserService {
         String publicUserId = utils.generateUserId(30);
         userEntity.setUserId(publicUserId);
         userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+
+        userEntity.setEmailVerificationStatus(true);
 
         UserEntity storedUserDetails = userRepository.save(userEntity);
 
@@ -125,7 +128,9 @@ public class UserServiceImpl implements UserService {
 
         if(userEntity == null) throw new UsernameNotFoundException(username);
 
-        return new User(username, userEntity.getEncryptedPassword(), new ArrayList<>());
+        return new UserPrincipal(userEntity);
+
+        // return new User(username, userEntity.getEncryptedPassword(), new ArrayList<>());
     }
 
     @Override

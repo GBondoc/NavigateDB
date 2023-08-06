@@ -1,5 +1,6 @@
 package com.navigatedb.ws.security;
 
+import com.navigatedb.ws.repository.UserRepository;
 import com.navigatedb.ws.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,11 +27,13 @@ public class WebSecurity {
 
     private final UserService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
 
 
-    public WebSecurity(UserService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public WebSecurity(UserService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository) {
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userRepository = userRepository;
     }
 
     @Bean
@@ -56,12 +59,13 @@ public class WebSecurity {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> {
                     auth.requestMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll();
+                    auth.requestMatchers(HttpMethod.DELETE, "/users/{userId}").hasRole("ADMIN");
                     //auth.requestMatchers(new AntPathRequestMatcher(SecurityConstants.H2_CONSOLE)).permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .authenticationManager(authenticationManager)
                 .addFilter(authenticationFilter)
-                .addFilter(new AuthorizationFilter(authenticationManager))
+                .addFilter(new AuthorizationFilter(authenticationManager, userRepository))
                 .sessionManagement((session) -> {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 });

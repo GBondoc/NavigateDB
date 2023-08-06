@@ -7,6 +7,8 @@ import java.util.Base64;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.navigatedb.ws.io.entity.UserEntity;
+import com.navigatedb.ws.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,8 +27,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
-    public AuthorizationFilter(AuthenticationManager authManager) {
+    private final UserRepository userRepository;
+
+    public AuthorizationFilter(AuthenticationManager authManager, UserRepository userRepository) {
         super(authManager);
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -70,7 +75,9 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
             return null;
         }
 
-        return new UsernamePasswordAuthenticationToken(subject, null, new ArrayList<>());
+        UserEntity userEntity = userRepository.findByEmail(subject);
+        UserPrincipal userPrincipal = new UserPrincipal(userEntity);
+        return new UsernamePasswordAuthenticationToken(subject, null, userPrincipal.getAuthorities());
 
     }
 
