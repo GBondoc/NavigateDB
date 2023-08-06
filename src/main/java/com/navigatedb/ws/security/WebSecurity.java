@@ -59,7 +59,7 @@ public class WebSecurity {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> {
                     auth.requestMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll();
-                    auth.requestMatchers(HttpMethod.DELETE, "/users/{userId}").hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.DELETE, "/users/{userId}").hasAuthority("DELETE_AUTHORITY");
                     //auth.requestMatchers(new AntPathRequestMatcher(SecurityConstants.H2_CONSOLE)).permitAll();
                     auth.anyRequest().authenticated();
                 })
