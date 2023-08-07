@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -23,6 +24,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurity {
 
     private final UserService userDetailsService;
@@ -59,7 +61,7 @@ public class WebSecurity {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> {
                     auth.requestMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll();
-                    auth.requestMatchers(HttpMethod.DELETE, "/users/{userId}").hasAuthority("DELETE_AUTHORITY");
+                    //auth.requestMatchers(HttpMethod.DELETE, "/users/{userId}").hasAuthority("DELETE_AUTHORITY");
                     //auth.requestMatchers(new AntPathRequestMatcher(SecurityConstants.H2_CONSOLE)).permitAll();
                     auth.anyRequest().authenticated();
                 })
