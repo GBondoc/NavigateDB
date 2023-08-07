@@ -65,7 +65,7 @@ public class UserController {
         return modelMapper.map(updatedUser, UserRest.class);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or #id == principal.userId")
     //@PreAuthorize("hasAuthority('DELETE_AUTHORITY')")
     //@Secured("ROLE_ADMIN")
     @DeleteMapping(path = "/{id}",
