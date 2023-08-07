@@ -8,6 +8,7 @@ import com.navigatedb.ws.ui.model.response.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public class UserController {
         return modelMapper.map(updatedUser, UserRest.class);
     }
 
+    @Secured("ROLE_ADMIN")
     @DeleteMapping(path = "/{id}",
             produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
