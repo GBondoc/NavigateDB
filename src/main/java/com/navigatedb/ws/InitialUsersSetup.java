@@ -6,6 +6,7 @@ import com.navigatedb.ws.io.entity.UserEntity;
 import com.navigatedb.ws.repository.AuthorityRepository;
 import com.navigatedb.ws.repository.RoleRepository;
 import com.navigatedb.ws.repository.UserRepository;
+import com.navigatedb.ws.shared.Roles;
 import com.navigatedb.ws.shared.Utils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +44,12 @@ public class InitialUsersSetup {
         AuthorityEntity writeAuthority = createAuthority("WRITE_AUTHORITY");
         AuthorityEntity deleteAuthority = createAuthority("DELETE_AUTHORITY");
 
-        RoleEntity roleUser = createRole("ROLE_USER", Arrays.asList(readAuthority, writeAuthority));
+        createRole(Roles.ROLE_USER.name(), Arrays.asList(readAuthority, writeAuthority));
 
         if(userRepository.findByEmail("admin@test.com") != null)
             return;
 
-        RoleEntity roleAdmin = createRole("ROLE_ADMIN", Arrays.asList(readAuthority, writeAuthority, deleteAuthority));
+        RoleEntity roleAdmin = createRole(Roles.ROLE_ADMIN.name(), Arrays.asList(readAuthority, writeAuthority, deleteAuthority));
 
         if(roleAdmin == null) return;
 

@@ -2,6 +2,7 @@ package com.navigatedb.ws.ui.controller;
 
 import com.navigatedb.ws.exceptions.UserServiceException;
 import com.navigatedb.ws.service.UserService;
+import com.navigatedb.ws.shared.Roles;
 import com.navigatedb.ws.shared.dto.UserDto;
 import com.navigatedb.ws.ui.model.request.UserDetailsRequestModel;
 import com.navigatedb.ws.ui.model.response.*;
@@ -14,6 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -45,6 +48,7 @@ public class UserController {
 
         ModelMapper modelMapper = new ModelMapper();
         UserDto userDto = modelMapper.map(userDetails, UserDto.class);
+        userDto.setRoles(new HashSet<>(Arrays.asList(Roles.ROLE_USER.name())));
 
         UserDto createdUser = userService.createUser(userDto);
 

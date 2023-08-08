@@ -1,7 +1,9 @@
 package com.navigatedb.ws.service.impl;
 
 import com.navigatedb.ws.exceptions.UserServiceException;
+import com.navigatedb.ws.io.entity.RoleEntity;
 import com.navigatedb.ws.io.entity.UserEntity;
+import com.navigatedb.ws.repository.RoleRepository;
 import com.navigatedb.ws.repository.UserRepository;
 import com.navigatedb.ws.security.UserPrincipal;
 import com.navigatedb.ws.service.UserService;
@@ -21,6 +23,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -34,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     @Override
     public UserDto createUser(UserDto user) throws UserServiceException {
@@ -60,6 +67,17 @@ public class UserServiceImpl implements UserService {
         userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         userEntity.setEmailVerificationStatus(true);
+
+        // Set roles
+        Collection<RoleEntity> roleEntities = new HashSet<>();
+        for(String role : user.getRoles()) {
+            RoleEntity roleEntity = roleRepository.findByName(role);
+            if(roleEntity != null) {
+                roleEntities.add(roleEntity);
+            }
+        }
+
+        userEntity.setRoles(roleEntities);
 
         UserEntity storedUserDetails = userRepository.save(userEntity);
 
