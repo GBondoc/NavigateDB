@@ -16,6 +16,7 @@ import com.navigatedb.ws.ui.model.response.RequestOperationStatus;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("users/{userId}/erds/{erdId}/entities")
+@PreAuthorize("hasRole('ADMIN') or #userId == principal.userId")
 public class EntityController {
 
     @Autowired
