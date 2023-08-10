@@ -18,4 +18,6 @@ public interface ErdService {
     List<ErdDto> getErds(String userId);
 
     ErdDto getErd(String erdId);
+
+    List<ErdDto> getErdsForUser(String userId, int page, int limit);
 }

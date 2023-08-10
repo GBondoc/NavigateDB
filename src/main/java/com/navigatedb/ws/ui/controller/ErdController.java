@@ -104,12 +104,30 @@ public class ErdController {
         return returnValue;
     }
 
+    /*
     @GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public List<ErdRest> getErds(@RequestParam(value = "page", defaultValue = "0") int page,
                                  @RequestParam(value = "limit", defaultValue = "50") int limit) {
         List<ErdRest> returnValue = new ArrayList<>();
 
         List<ErdDto> erds = erdService.getErds(page, limit);
+        ModelMapper modelMapper = new ModelMapper();
+
+        for(ErdDto erdDto : erds) {
+            ErdRest erdModel = modelMapper.map(erdDto, ErdRest.class);
+            returnValue.add(erdModel);
+        }
+
+        return returnValue;
+    }
+    */
+    @GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public List<ErdRest> getErds(@PathVariable String userId,
+                                 @RequestParam(value = "page", defaultValue = "0") int page,
+                                 @RequestParam(value = "limit", defaultValue = "50") int limit) {
+        List<ErdRest> returnValue = new ArrayList<>();
+
+        List<ErdDto> erds = erdService.getErdsForUser(userId, page, limit);
         ModelMapper modelMapper = new ModelMapper();
 
         for(ErdDto erdDto : erds) {

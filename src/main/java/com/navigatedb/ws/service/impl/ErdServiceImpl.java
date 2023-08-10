@@ -135,4 +135,24 @@ public class ErdServiceImpl implements ErdService {
         return returnValue;
     }
 
+    @Override
+    public List<ErdDto> getErdsForUser(String userId, int page, int limit) {
+        List<ErdDto> returnValue = new ArrayList<>();
+
+        if(page > 0) page = page - 1;
+
+        Pageable pageableRequest = PageRequest.of(page, limit);
+
+        Page<ErdEntity> erdsPage = erdRepository.findByUserDetailsUserId(userId, pageableRequest);
+        List<ErdEntity> erds = erdsPage.getContent();
+        ModelMapper modelMapper = new ModelMapper();
+
+        for(ErdEntity erdEntity : erds) {
+            ErdDto erdDto = modelMapper.map(erdEntity, ErdDto.class);
+            returnValue.add(erdDto);
+        }
+
+        return returnValue;
+    }
+
 }
