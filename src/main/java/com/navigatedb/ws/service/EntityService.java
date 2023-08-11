@@ -11,4 +11,5 @@ public interface EntityService {
     void deleteEntity(String entityId);
     List<EntityDto> getEntities(int page, int limit);
     EntityDto getEntityByName(String entityName);
+    List<EntityDto> getEntitiesforErdByUser(String userId, String erdId, int page, int limit);
 }

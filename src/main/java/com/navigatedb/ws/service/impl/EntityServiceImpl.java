@@ -117,4 +117,25 @@ public class EntityServiceImpl implements EntityService {
 
     }
 
+    @Override
+    public List<EntityDto> getEntitiesforErdByUser(String userId, String erdId, int page, int limit) {
+        List<EntityDto> returnValue = new ArrayList<>();
+
+        if(page > 0) page = page - 1;
+
+        Pageable pageableRequest = PageRequest.of(page, limit);
+
+        Page<EntityEntity> entitiesPage = entityRepository.findByErdDetailsErdIdAndErdDetailsUserDetailsUserId(erdId, userId, pageableRequest);
+        List<EntityEntity> entities = entitiesPage.getContent();
+        ModelMapper modelMapper = new ModelMapper();
+
+        for(EntityEntity entityEntity : entities) {
+            EntityDto entityDto = modelMapper.map(entityEntity, EntityDto.class);
+            returnValue.add(entityDto);
+        }
+
+        return returnValue;
+
+    }
+
 }
