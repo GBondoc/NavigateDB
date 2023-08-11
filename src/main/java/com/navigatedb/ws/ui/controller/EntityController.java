@@ -130,12 +130,31 @@ public class EntityController {
         return returnValue;
     }
 
+    /*
     @GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public List<EntityRest> getEntities(@RequestParam(value = "page", defaultValue = "0") int page,
                                         @RequestParam(value = "limit", defaultValue = "50") int limit) {
         List<EntityRest> returnValue = new ArrayList<>();
 
         List<EntityDto> entities = entityService.getEntities(page, limit);
+        ModelMapper modelMapper = new ModelMapper();
+
+        for(EntityDto entityDto : entities) {
+            EntityRest entityModel = modelMapper.map(entityDto, EntityRest.class);
+            returnValue.add(entityModel);
+        }
+
+        return returnValue;
+    }
+    */
+    @GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public List<EntityRest> getEntities(@PathVariable String userId,
+                                        @PathVariable String erdId,
+                                        @RequestParam(value = "page", defaultValue = "0") int page,
+                                        @RequestParam(value = "limit", defaultValue = "50") int limit) {
+        List<EntityRest> returnValue = new ArrayList<>();
+
+        List<EntityDto> entities = entityService.getEntitiesforErdByUser(userId, erdId, page, limit);
         ModelMapper modelMapper = new ModelMapper();
 
         for(EntityDto entityDto : entities) {
