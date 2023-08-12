@@ -134,6 +134,7 @@ public class TupleController {
         return returnValue;
     }
 
+    /*
     @GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public List<TupleRest> getTuples(@RequestParam(value = "page", defaultValue = "0") int page,
                                      @RequestParam(value = "limit", defaultValue = "50") int limit) {
@@ -150,6 +151,26 @@ public class TupleController {
 
         return returnValue;
     }
+     */
 
+    @GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public List<TupleRest> getTuples(@PathVariable String userId,
+                                     @PathVariable String erdId,
+                                     @PathVariable String entityId,
+                                     @RequestParam(value = "page", defaultValue = "0") int page,
+                                     @RequestParam(value = "limit", defaultValue = "50") int limit) {
+
+        List<TupleRest> returnValue = new ArrayList<>();
+
+        List<TupleDto> tuples = tupleService.getTuplesForEntity(entityId, erdId, userId, page, limit);
+        ModelMapper modelMapper = new ModelMapper();
+
+        for(TupleDto tupleDto : tuples) {
+            TupleRest tupleModel = modelMapper.map(tupleDto, TupleRest.class);
+            returnValue.add(tupleModel);
+        }
+
+        return returnValue;
+    }
 
 }

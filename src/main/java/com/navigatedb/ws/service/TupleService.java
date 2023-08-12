@@ -10,4 +10,5 @@ public interface TupleService {
     TupleDto updateTuple(String tupleId, TupleDto tuple);
     void deleteTuple(String tupleId);
     List<TupleDto> getTuples(int page, int limit);
+    List<TupleDto> getTuplesForEntity(String entityId, String erdId, String userId, int page, int limit);
 }

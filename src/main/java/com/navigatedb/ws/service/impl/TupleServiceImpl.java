@@ -7,7 +7,10 @@ import com.navigatedb.ws.repository.EntityRepository;
 import com.navigatedb.ws.repository.TupleRepository;
 import com.navigatedb.ws.service.TupleService;
 import com.navigatedb.ws.shared.Utils;
+import com.navigatedb.ws.shared.dto.EntityDto;
+import com.navigatedb.ws.shared.dto.ErdDto;
 import com.navigatedb.ws.shared.dto.TupleDto;
+import com.navigatedb.ws.shared.dto.UserDto;
 import com.navigatedb.ws.ui.model.response.ErrorMessages;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,4 +134,30 @@ public class TupleServiceImpl implements TupleService {
 
         return returnValue;
     }
+
+    @Autowired
+    public TupleServiceImpl(TupleRepository tupleRepository) {
+        this.tupleRepository = tupleRepository;
+    }
+
+    @Override
+    public List<TupleDto> getTuplesForEntity(String entityId, String erdId, String userId, int page, int limit) {
+        List<TupleDto> returnValue = new ArrayList<>();
+
+        if (page > 0)  page = page - 1;
+
+        Pageable pageableRequest = PageRequest.of(page, limit);
+        Page<TupleEntity> tuplePage = tupleRepository.findByEntityDetailsEntityIdAndEntityDetailsErdDetailsErdIdAndEntityDetailsErdDetailsUserDetailsUserId(entityId, erdId, userId, pageableRequest);
+        List<TupleEntity> tuples = tuplePage.getContent();
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        for (TupleEntity tupleEntity : tuples) {
+            TupleDto tupleDto = modelMapper.map(tupleEntity, TupleDto.class);
+            returnValue.add(tupleDto);
+        }
+
+        return returnValue;
+    }
+
 }
