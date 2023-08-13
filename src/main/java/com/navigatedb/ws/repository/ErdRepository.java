@@ -17,5 +17,5 @@ public interface ErdRepository extends PagingAndSortingRepository<ErdEntity, Lon
     ErdEntity findByErdId(String erdId);
     List<ErdEntity> findAllByUserDetails(UserEntity userEntity);
     Page<ErdEntity> findByUserDetailsUserId(String userId, Pageable pageable);
-
+    boolean existsByUserDetailsUserIdAndName(String userId, String name);
 }
