@@ -28,7 +28,7 @@ public class EntityServiceImpl implements EntityService {
 
     public EntityDto createEntity(EntityDto entity) throws EntityServiceException {
 
-        if(entityRepository.findByName(entity.getName()) != null)
+        if(entityRepository.existsByErdDetailsErdIdAndName(entity.getErdDetails().getErdId(), entity.getName()))
             throw new EntityServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
 
         ModelMapper modelMapper = new ModelMapper();
