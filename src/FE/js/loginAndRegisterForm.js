@@ -32,12 +32,36 @@ document.addEventListener("DOMContentLoaded", () => {
         createAccountForm.classList.add("form--hidden");
     });
 
-    loginForm.addEventListener("submit", (e) => {
+    loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         // Perform login
+        const emailInput = loginForm.querySelector(".form__input[placeholder='Email']");
+        const passwordInput = loginForm.querySelector(".form__input[placeholder='Password']");
+        const email = emailInput.value;
+        const password = passwordInput.value;
 
-        setFormMessage(loginForm, "error", "Invalid email/password combination")
+        try {
+            const response = await fetch('http://localhost:8080/NavigateDB/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({email, password})
+            });
+
+            if(response.ok) {
+                //redirect to successful login page
+                // windows.location.href = "/dashboard";
+                setFormMessage(loginForm, "success", "Logged in");
+            } else {
+                setFormMessage(loginForm, "error", "Invalid email/password combination");
+            }
+        } catch (err) {
+            console.error("An error occured: ", err);
+            setFormMessage(loginForm, "error", "An error occurred during login");
+        }
+
     });
 
     document.querySelectorAll(".form__input").forEach((inputElement) => {
