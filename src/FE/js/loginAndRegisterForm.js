@@ -50,15 +50,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({email, password})
             });
 
-            if(response.ok) {
-                //redirect to successful login page
-                // windows.location.href = "/dashboard";
-                setFormMessage(loginForm, "success", "Logged in");
+            console.log('Response:', response);
+
+            if (response.ok) {
+                const data = await response.json();
+                const token = data.token;
+
+                // Store the token in localStorage
+                localStorage.setItem('jwtToken', token);
+
+                setFormMessage(loginForm, 'success', 'Logged in');
             } else {
-                setFormMessage(loginForm, "error", "Invalid email/password combination");
+                setFormMessage(loginForm, 'error', 'Invalid email/password combination');
             }
         } catch (err) {
-            console.error("An error occured: ", err);
+            console.error("An error occurred: ", err);
             setFormMessage(loginForm, "error", "An error occurred during login");
         }
 
@@ -71,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        inputElement.addEventListener("input", (e) => {
+        inputElement.addEventListener("input", () => {
             clearInputError(inputElement);
         });
     });

@@ -65,6 +65,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .setIssuedAt(Date.from(now)).signWith(secretKey, SignatureAlgorithm.HS512).compact();
 
         res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+
+        res.setStatus(HttpServletResponse.SC_OK);
+        res.setContentType("application/json");
+        res.getWriter().write("{\"token\": \"" + SecurityConstants.TOKEN_PREFIX + token + "\"}");
     }
 
 }
