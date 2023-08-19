@@ -2,8 +2,8 @@ function setFormMessage(formElement, type, message) {
     const messageElement = formElement.querySelector(".form__message");
 
     messageElement.textContent = message;
-    messageElement.classList.remove("form__message--success", "form_message--error");
-    messageElement.classList.add('form__message--${type}');
+    messageElement.classList.remove("form__message--success", "form__message--error");
+    messageElement.classList.add(`form__message--${type}`);
 }
 
 function setInputError(inputElement, message) {
@@ -36,6 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#linkCreateAccount").addEventListener("click", (e) => {
         e.preventDefault();
 
+        clearFormErrors(createAccountForm);
+        setFormMessage(createAccountForm, "error", "");
         clearFormFields(createAccountForm);
 
         loginForm.classList.add("form--hidden");
@@ -45,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#linkLogin").addEventListener("click", (e) => {
         e.preventDefault();
 
+        setFormMessage(loginForm, "error", "");
         clearFormFields(loginForm);
 
         loginForm.classList.remove("form--hidden");
@@ -83,7 +86,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
             } catch (err) {
-                console.error("An error occurred: ", err);
                 setFormMessage(createAccountForm, "error", "An error occurred during registration");
             }
         }
@@ -92,7 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        // Perform login
         const emailInput = loginForm.querySelector(".form__input[placeholder='Email']");
         const passwordInput = loginForm.querySelector(".form__input[placeholder='Password']");
         const email = emailInput.value;
@@ -112,7 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const data = await response.json();
                 const token = data.token;
 
-                // Store the token in localStorage
                 localStorage.setItem('jwtToken', token);
 
                 setFormMessage(loginForm, 'success', 'Logged in');
@@ -120,7 +120,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 setFormMessage(loginForm, 'error', 'Invalid email/password combination');
             }
         } catch (err) {
-            console.error("An error occurred: ", err);
             setFormMessage(loginForm, "error", "An error occurred during login");
         }
 
@@ -134,6 +133,17 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         inputElement.addEventListener("blur", (e) => {
+            if(e.target.id === "signUpPassword") {
+                const passwordInput = document.getElementById("signUpPassword");
+                const confirmPasswordInput = document.getElementById("signUpConfirmPassword");
+
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    setInputError(confirmPasswordInput, "Password and confirm password do not match");
+                } else {
+                    clearInputError(confirmPasswordInput);
+                }
+            }
+
             if (e.target.id === "signUpConfirmPassword") {
                 const passwordInput = document.getElementById("signUpPassword");
                 const confirmPasswordInput = document.getElementById("signUpConfirmPassword");
