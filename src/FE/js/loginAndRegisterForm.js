@@ -67,9 +67,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const passwordInput = loginForm.querySelector(".form__input[placeholder='Password']");
         const email = emailInput.value;
         const password = passwordInput.value;
+        let token = "";
 
         try {
-            const response = await fetch('http://localhost:8080/NavigateDB/users/login', {
+            const loginResponse = await fetch('http://localhost:8080/NavigateDB/users/login', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -78,16 +79,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({email, password})
             });
 
-            if (response.ok) {
-                const data = await response.json();
-                const token = data.token;
+            if (loginResponse.ok) {
+                const data = await loginResponse.json();
+                token = data.token;
 
+                localStorage.setItem('email', email);
                 localStorage.setItem('jwtToken', token);
 
                 setFormMessage(loginForm, 'success', 'Logged in');
             } else {
                 setFormMessage(loginForm, 'error', 'Invalid email/password combination');
             }
+
+            const getPublicUserIdResponse = await fetch(`http://localhost:8080/NavigateDB/users/${email}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({email})
+            });
+
+            if(getPublicUserIdResponse.ok) {
+                const data = await getPublicUserIdResponse.json();
+                const publicUserId = data.userId;
+
+                localStorage.setItem('publicUserId', publicUserId);
+            }
+
         } catch (err) {
             setFormMessage(loginForm, "error", "An error occurred during login");
         }
