@@ -1,6 +1,7 @@
 package com.navigatedb.ws.ui.controller;
 
 import com.navigatedb.ws.exceptions.UserServiceException;
+import com.navigatedb.ws.security.UserPrincipal;
 import com.navigatedb.ws.service.UserService;
 import com.navigatedb.ws.shared.Roles;
 import com.navigatedb.ws.shared.dto.UserDto;
@@ -12,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -36,6 +39,19 @@ public class UserController {
         ModelMapper modelMapper = new ModelMapper();
 
         return modelMapper.map(userDto, UserRest.class);
+    }
+
+    @GetMapping(path = "/getUserPrincipal", produces = { MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_JSON_VALUE}
+    )
+    public String getUserPrincipal() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Assuming you have a UserPrincipal class that represents the user's principal
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+
+        return userPrincipal.getUserId();
     }
 
     @PostMapping(
