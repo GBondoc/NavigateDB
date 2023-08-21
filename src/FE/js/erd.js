@@ -24,7 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if(createErdResponse.ok) {
                 setFormMessage(erdForm, 'success', 'Erd has been created');
             } else {
-                setFormMessage(erdForm, 'error', 'An erd with the same name already exists for this user');
+                if(name.length === 0) {
+                    setFormMessage(erdForm, 'error', "Field can't be empty");
+                } else {
+                    setFormMessage(erdForm, 'error', 'An erd with the same name already exists for this user');
+                }
             }
         } catch (err) {
             setFormMessage(erdForm, "error", "An error occurred during erd creation");

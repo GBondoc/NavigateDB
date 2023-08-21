@@ -91,14 +91,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 setFormMessage(loginForm, 'error', 'Invalid email/password combination');
             }
 
-            const getPublicUserIdResponse = await fetch(`http://localhost:8080/NavigateDB/users/${email}`, {
+            const getPublicUserIdResponse = await fetch('http://localhost:8080/NavigateDB/users/getUserPrincipal', {
                 method: 'GET',
                 headers: {
                     'Authorization': token,
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({email})
+                }
             });
 
             if(getPublicUserIdResponse.ok) {
