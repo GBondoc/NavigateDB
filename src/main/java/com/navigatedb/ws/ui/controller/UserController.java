@@ -44,14 +44,14 @@ public class UserController {
     @GetMapping(path = "/getUserPrincipal", produces = { MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_JSON_VALUE}
     )
-    public String getUserPrincipal() {
+    public UserPrincipal getUserPrincipal() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         // Assuming you have a UserPrincipal class that represents the user's principal
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
-        return userPrincipal.getUserId();
+        return userPrincipal;
     }
 
     @PostMapping(
