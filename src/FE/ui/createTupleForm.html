@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NavigateDB</title>
+  <link rel = "stylesheet" href = "../css/createForm.css">
+</head>
+<body>
+<div class = "container">
+  <form class="form" id="createTuple">
+    <h1 class="form__title">Create Tuple</h1>
+    <div class="form__message form__message--error"></div>
+    <div class="form__input-group">
+      <input type="text" class="form__input" placeholder="Constraint Type">
+      <div class="form__input-error-message"></div>
+    </div>
+    <div class="form__input-group">
+      <input type="text" class="form__input" autofocus placeholder="Column name">
+      <div class="form__input-error-message"></div>
+    </div>
+    <div class="form__input-group">
+      <input type="text" class="form__input" placeholder="Data Type">
+      <div class="form__input-error-message"></div>
+    </div>
+    <button class="form__button" type="submit">Create</button>
+  </form>
+</div>
+
+<script src = "../js/formUtils.js"></script>
+<script src = "../js/tuple.js"></script>
+</body>
+</html>
