@@ -12,6 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const token = localStorage.getItem('jwtToken');
         const publicUserId = localStorage.getItem('publicUserId');
 
-        
+
     });
 });
