@@ -1,0 +1,60 @@
+body {
+    --color-primary: #009579;
+    --color-secondary: #252c6a;
+    --color-hover: #25225a;
+    --background-button-color: var(--color-secondary);
+    background-color: var(--color-primary);
+
+    font: 500 1rem 'Quicksand', sans-serif;
+}
+
+.erd--grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.erd-square {
+    width: 100%; /* Let the content determine width */
+    max-width: 500px; /* Limit the maximum width */
+    height: 100px;
+    background-color: var(--background-button-color); /* Use color variable */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transition: background-color 0.2s; /* Add a smooth transition effect */
+}
+
+.erd-square:hover {
+    background-color: var(--color-hover); /* Use hover color variable */
+}
+
+.title-section {
+    display: flex;
+    justify-content: space-between; /* Aligns items on each end of the container */
+    align-items: center; /* Centers items vertically */
+    gap: 10px;
+}
+
+.create-erd-button {
+    background-color: var(--background-button-color); /* Use color variable */
+    color: white;
+    border: none;
+    border-radius: 10px; /* Match the border radius of the squares */
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s; /* Add a smooth transition effect */
+}
+
+.create-erd-button:hover {
+    background-color: var(--color-hover); /* Use hover color variable */
+}
