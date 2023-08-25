@@ -2,6 +2,7 @@ body {
     --color-primary: #009579;
     --color-secondary: #252c6a;
     --color-hover: #25225a;
+    --color-error: red;
     --background-button-color: var(--color-secondary);
     background-color: var(--color-primary);
 
@@ -53,8 +54,13 @@ body {
     padding: 0.5rem 1rem;
     cursor: pointer;
     transition: background-color 0.2s; /* Add a smooth transition effect */
+    text-decoration: none; /* Remove underline */
 }
 
 .create-erd-button:hover {
     background-color: var(--color-hover); /* Use hover color variable */
+}
+
+.error-message {
+    color: var(--color-error);
 }
