@@ -5,7 +5,9 @@ body {
     --color-error: red;
     --background-button-color: var(--color-secondary);
     background-color: var(--color-primary);
+}
 
+.custom-font {
     font: 500 1rem 'Quicksand', sans-serif;
 }
 
@@ -17,10 +19,10 @@ body {
 }
 
 .erd-square {
-    width: 100%; /* Let the content determine width */
-    max-width: 500px; /* Limit the maximum width */
+    width: 100%;
+    max-width: 500px;
     height: 100px;
-    background-color: var(--background-button-color); /* Use color variable */
+    background-color: var(--background-button-color);
     color: white;
     display: flex;
     align-items: center;
@@ -32,35 +34,84 @@ body {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    transition: background-color 0.2s; /* Add a smooth transition effect */
+    transition: background-color 0.2s;
 }
 
 .erd-square:hover {
-    background-color: var(--color-hover); /* Use hover color variable */
+    background-color: var(--color-hover);
 }
 
 .title-section {
     display: flex;
-    justify-content: space-between; /* Aligns items on each end of the container */
-    align-items: center; /* Centers items vertically */
+    justify-content: space-between;
+    align-items: center;
     gap: 10px;
 }
 
 .create-erd-button {
-    background-color: var(--background-button-color); /* Use color variable */
+    background-color: var(--background-button-color);
     color: white;
     border: none;
-    border-radius: 10px; /* Match the border radius of the squares */
+    border-radius: 10px;
     padding: 0.5rem 1rem;
     cursor: pointer;
-    transition: background-color 0.2s; /* Add a smooth transition effect */
-    text-decoration: none; /* Remove underline */
+    transition: background-color 0.2s;
+    text-decoration: none;
 }
 
 .create-erd-button:hover {
-    background-color: var(--color-hover); /* Use hover color variable */
+    background-color: var(--color-hover);
 }
 
 .error-message {
     color: var(--color-error);
+}
+
+.delete-erds-button {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-decoration: none;
+}
+
+.delete-erds-button:hover {
+    background-color: darkred;
+}
+
+.confirm-delete-button {
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.confirm-delete-button:hover {
+    background-color: darkgreen;
+}
+
+.cancel-delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.cancel-delete-button:hover {
+    background-color: darkred;
+}
+
+
+.button-container {
+    display: flex;
+    gap: 10px;
 }
