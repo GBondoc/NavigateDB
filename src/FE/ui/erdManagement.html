@@ -10,14 +10,25 @@
 <div class="page-container">
   <div class="title-section">
     <h1 class="your-erds-title">Connect to one of your ERDs</h1>
-    <a href="formCreations/createErdForm.html" class="create-erd-button">Create ERD</a>
-    <button class="delete-erds-button">Delete ERDs</button>
+    <div class="button-container">
+      <a href="formCreations/createErdForm.html" class="create-erd-button">Create ERD</a>
+      <button class="delete-erds-button">Delete ERDs</button>
+    </div>
   </div>
 
   <p id="error-message" class="error-message"></p>
 
   <div class="erd--grid">
     <!-- ERD squares will be dynamically added here -->
+  </div>
+
+  <div class="selected-erds" style="display: none;"> <!-- Initially hidden -->
+    <p>Selected ERDs for deletion:</p>
+    <div class="selected-erd-list"></div>
+    <div class="delete-actions">
+      <button class="confirm-delete-button">Confirm Delete</button>
+      <button class="cancel-delete-button">Cancel</button>
+    </div>
   </div>
 </div>
 
