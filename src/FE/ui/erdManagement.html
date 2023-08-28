@@ -11,6 +11,7 @@
   <div class="title-section">
     <h1 class="your-erds-title">Connect to one of your ERDs</h1>
     <div class="button-container">
+      <button id="logout-button" class="logout-button">Logout</button>
       <a href="formCreations/createErdForm.html" class="create-erd-button">Create ERD</a>
       <button class="delete-erds-button">Delete ERDs</button>
     </div>
@@ -22,7 +23,7 @@
     <!-- ERD squares will be dynamically added here -->
   </div>
 
-  <div class="selected-erds" style="display: none;"> <!-- Initially hidden -->
+  <div class="selected-erds" style="display: none;">
     <p>Selected ERDs for deletion:</p>
     <div class="selected-erd-list"></div>
     <div class="delete-actions">
@@ -33,5 +34,6 @@
 </div>
 
 <script src="../js/erdListing.js"></script>
+<script src="../js/logout.js"></script>
 </body>
 </html>

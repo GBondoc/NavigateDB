@@ -105,6 +105,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 const publicUserId = data.userId;
 
                 localStorage.setItem('publicUserId', publicUserId);
+
+                window.location.href = "ui/erdManagement.html";
             }
 
         } catch (err) {
