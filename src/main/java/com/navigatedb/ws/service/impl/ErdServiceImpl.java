@@ -49,9 +49,9 @@ public class ErdServiceImpl implements ErdService {
     }
 
     @Override
-    public ErdDto getErdByErdId(String erdId) throws ErdServiceException {
+    public ErdDto getErdByErdId(String userId, String erdId) throws ErdServiceException {
 
-        ErdEntity erdEntity = erdRepository.findByErdId(erdId);
+        ErdEntity erdEntity = erdRepository.findByUserDetailsUserIdAndErdId(userId, erdId);
 
         if(erdEntity == null) throw new ErdServiceException("ERD with ID: " + erdId + " not found");
 
@@ -153,6 +153,17 @@ public class ErdServiceImpl implements ErdService {
         }
 
         return returnValue;
+    }
+
+    @Override
+    public ErdDto getErdByName(String userId, String erdName) {
+        ErdEntity erdEntity = erdRepository.findByUserDetailsUserIdAndName(userId, erdName);
+
+        if(erdEntity == null) throw new ErdServiceException("ERD with ID: " + erdName + " not found");
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(erdEntity, ErdDto.class);
     }
 
 }

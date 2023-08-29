@@ -74,7 +74,7 @@ public class TupleController {
         if(user == null)
             throw new TupleServiceException(ErrorMessages.INTERNAL_SERVER_ERROR.getErrorMessage());
 
-        ErdDto erd = erdService.getErdByErdId(erdId);
+        ErdDto erd = erdService.getErdByErdId(userId, erdId);
 
         if(erd == null
         || !erd.getUserDetails().getUserId().equals(user.getUserId()))

@@ -7,7 +7,7 @@ import java.util.List;
 public interface ErdService {
     ErdDto createErd(ErdDto erd);
 
-    ErdDto getErdByErdId(String erdId);
+    ErdDto getErdByErdId(String userId, String erdId);
 
     ErdDto updateErd(String erdId, ErdDto erd);
 
@@ -20,4 +20,6 @@ public interface ErdService {
     ErdDto getErd(String erdId);
 
     List<ErdDto> getErdsForUser(String userId, int page, int limit);
+
+    ErdDto getErdByName(String userId, String erdName);
 }
