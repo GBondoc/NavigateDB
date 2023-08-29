@@ -76,7 +76,7 @@ public class EntityController {
         if(user == null)
             throw new EntityServiceException(ErrorMessages.INTERNAL_SERVER_ERROR.getErrorMessage());
 
-        ErdDto erd = erdService.getErdByErdId(erdId);
+        ErdDto erd = erdService.getErdByErdId(userId, erdId);
         erd.setUserDetails(user);
 
         if(erd == null || !erd.getUserDetails().getUserId().equals(user.getUserId()))

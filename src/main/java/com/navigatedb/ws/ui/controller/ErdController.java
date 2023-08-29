@@ -34,9 +34,9 @@ public class ErdController {
     @GetMapping(path = "/{erdId}", produces = { MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_JSON_VALUE}
     )
-    public ErdRest getUserErd(@PathVariable String erdId) {
+    public ErdRest getUserErd(@PathVariable String userId, @PathVariable String erdId) {
 
-        ErdDto erdDto = erdService.getErd(erdId);
+        ErdDto erdDto = erdService.getErdByErdId(userId, erdId);
 
         ModelMapper modelMapper = new ModelMapper();
 
@@ -136,6 +136,18 @@ public class ErdController {
         }
 
         return returnValue;
+    }
+
+    @GetMapping(path = "/getErdByName/{erdName}", produces = { MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ErdRest getUserErdByName(@PathVariable String userId, @PathVariable String erdName) {
+
+        ErdDto erdDto = erdService.getErdByName(userId, erdName);
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(erdDto, ErdRest.class);
     }
 
 }
