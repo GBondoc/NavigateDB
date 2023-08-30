@@ -115,3 +115,18 @@ body {
     display: flex;
     gap: 10px;
 }
+
+.logout-button {
+    background-color: #805232; /* Adjust the background color */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-decoration: none;
+}
+
+.logout-button:hover {
+    background-color: #00856b; /* Adjust the hover color */
+}
