@@ -14,4 +14,6 @@ public interface EntityRepository extends PagingAndSortingRepository<EntityEntit
     EntityEntity findByEntityId(String entityId);
     Page<EntityEntity> findByErdDetailsErdIdAndErdDetailsUserDetailsUserId(String erdId, String userId, Pageable pageable);
     boolean existsByErdDetailsErdIdAndName(String erdId, String name);
+
+    EntityEntity findByErdDetailsErdIdAndErdDetailsUserDetailsUserIdAndEntityId(String erdId, String userId, String entityId);
 }

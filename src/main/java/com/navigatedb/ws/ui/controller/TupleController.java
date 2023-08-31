@@ -80,7 +80,7 @@ public class TupleController {
         || !erd.getUserDetails().getUserId().equals(user.getUserId()))
             throw new TupleServiceException(ErrorMessages.INTERNAL_SERVER_ERROR.getErrorMessage());
 
-        EntityDto entity = entityService.getEntity(entityId);
+        EntityDto entity = entityService.getEntity(entityId, erdId, userId);
 
         if(entity == null
         || !entity.getErdDetails().getErdId().equals(erd.getErdId()))
