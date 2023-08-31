@@ -43,9 +43,9 @@ public class EntityServiceImpl implements EntityService {
     }
 
     @Override
-    public EntityDto getEntity(String entityId) throws EntityServiceException {
+    public EntityDto getEntity(String entityId, String erdId, String userId) throws EntityServiceException {
 
-        EntityEntity entityEntity = entityRepository.findByEntityId(entityId);
+        EntityEntity entityEntity = entityRepository.findByErdDetailsErdIdAndErdDetailsUserDetailsUserIdAndEntityId(erdId, userId, entityId);
 
         if(entityEntity == null)
             throw new EntityServiceException("Entity with ID: " + entityId + " not found");
