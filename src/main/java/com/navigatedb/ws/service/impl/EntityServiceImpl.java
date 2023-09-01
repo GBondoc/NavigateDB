@@ -104,9 +104,9 @@ public class EntityServiceImpl implements EntityService {
     }
 
     @Override
-    public EntityDto getEntityByName(String entityName) {
-
-        EntityEntity entityEntity = entityRepository.findByName(entityName);
+    public EntityDto getEntityByName(String entityName, String erdId, String userId) {
+        
+        EntityEntity entityEntity = entityRepository.findByErdDetailsErdIdAndErdDetailsUserDetailsUserIdAndName(erdId, userId, entityName);
 
         if(entityEntity == null)
             throw new EntityServiceException("Entity with name: " + entityName + " not found");

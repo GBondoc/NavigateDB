@@ -51,9 +51,9 @@ public class EntityController {
     @GetMapping(path = "/name/{entityName}", produces = { MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_JSON_VALUE}
     )
-    public EntityRest getEntityByName(@PathVariable String entityName) {
+    public EntityRest getEntityByName(@PathVariable String entityName, @PathVariable String erdId, @PathVariable String userId) {
 
-        EntityDto entityDto = entityService.getEntityByName(entityName);
+        EntityDto entityDto = entityService.getEntityByName(entityName, erdId, userId);
 
         ModelMapper modelMapper = new ModelMapper();
 

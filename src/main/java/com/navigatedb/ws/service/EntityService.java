@@ -10,6 +10,6 @@ public interface EntityService {
     EntityDto updateEntity(String entityId, EntityDto entity);
     void deleteEntity(String entityId);
     List<EntityDto> getEntities(int page, int limit);
-    EntityDto getEntityByName(String entityName);
+    EntityDto getEntityByName(String entityName, String erdId, String userId);
     List<EntityDto> getEntitiesforErdByUser(String userId, String erdId, int page, int limit);
 }
