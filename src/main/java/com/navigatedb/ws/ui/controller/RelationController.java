@@ -11,6 +11,7 @@ import com.navigatedb.ws.ui.model.response.RequestOperationStatus;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class RelationController {
         return modelMapper.map(relationDto, RelationRest.class);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(
             consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
             produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
@@ -51,6 +53,7 @@ public class RelationController {
         return modelMapper.map(createdRelation, RelationRest.class);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(path = "/{id}",
             consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
             produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
@@ -70,6 +73,7 @@ public class RelationController {
         return modelMapper.map(updatedRelation, RelationRest.class);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/{id}",
             produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
