@@ -104,8 +104,6 @@ public class EntityRelationServiceImpl implements EntityRelationService {
             relationReceiver = type;
         }
 
-        ModelMapper modelMapper = new ModelMapper();
-
         String channel = utils.generateEntityRelationChannel(30);
 
         EntityRelationEntity entityRelationEntitySender = new EntityRelationEntity();
