@@ -55,6 +55,19 @@ public class TupleController {
         return modelMapper.map(tupleDto, TupleRest.class);
     }
 
+    @GetMapping(path = "/name/{tupleName}",
+            produces = { MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE}
+    )
+    public TupleRest getEntityTupleByName(@PathVariable String tupleName) {
+
+        TupleDto tupleDto = tupleService.getTupleByName(tupleName);
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(tupleDto, TupleRest.class);
+    }
+
     @PostMapping(
             consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
             produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
