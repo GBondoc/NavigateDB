@@ -81,6 +81,19 @@ public class TupleServiceImpl implements TupleService {
     }
 
     @Override
+    public TupleDto getTupleByName(String tupleName) {
+
+        TupleEntity tupleEntity = tupleRepository.findByColumnName(tupleName);
+
+        if(tupleEntity == null)
+            throw new TupleServiceException("Tuple with name: " + tupleName + " not found");
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(tupleEntity, TupleDto.class);
+    }
+
+    @Override
     public TupleDto updateTuple(String tupleId, TupleDto tuple) {
 
         TupleEntity tupleEntity = tupleRepository.findByTupleId(tupleId);
