@@ -1,0 +1,26 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    background-color: #333;
+    color: white;
+    width: 200px;
+    padding: 20px;
+}
+
+.list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.list-entity {
+    margin-bottom: 10px;
+}
