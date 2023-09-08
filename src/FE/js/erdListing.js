@@ -62,6 +62,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    erdGrid.addEventListener('click', (event) => {
+        if (deleteErdButtonClicked) {
+            // Handle selection for deletion here if delete button is clicked
+            const erdName = event.target.textContent;
+            toggleSelectErdForDeletion(erdName);
+        } else {
+            // If delete button is not clicked, handle ERD square click as navigation
+            const erdName = event.target.textContent;
+
+            const erdId = getErdIdFromName(erdName);
+            if (erdId) {
+                // Redirect to the specific ERD page with the ID as a query parameter
+                window.location.href = 'ui/entityManagement.html';
+            }
+        }
+    });
+
     deleteErdButton.addEventListener('click', () => {
         deleteErdButtonClicked = true;
         selectedErdsSection.style.display = 'block';
