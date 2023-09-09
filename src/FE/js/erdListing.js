@@ -72,9 +72,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const erdName = event.target.textContent;
 
             const erdId = getErdIdFromName(erdName);
+            localStorage.setItem('erdId', erdId);
             if (erdId) {
                 // Redirect to the specific ERD page with the ID as a query parameter
-                window.location.href = 'ui/entityManagement.html';
+                window.location.href = 'entityManagement.html';
             }
         }
     });
@@ -99,6 +100,28 @@ document.addEventListener("DOMContentLoaded", () => {
     // Function to display error message
     function displayErrorMessage(message) {
         errorMessageElement.textContent = message;
+    }
+
+    async function getErdIdFromName(name) {
+        try {
+            const getErdIdByName = await fetch(`http://localhost:8080/NavigateDB/users/${publicUserId}/erds/getErdByName/${name}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+            if(!getErdIdByName.ok) {
+                throw new Error(`Error fetching ERD with name ${name}`);
+            }
+            const data = await getErdIdByName.json();
+
+            return data.erdId;
+        } catch(error) {
+            console.error('Error fetching ERD:', error);
+            displayErrorMessage('An error occurred while fetching ERDs. Please try again later.');
+        }
     }
 
     // Function to fetch and populate ERDs
