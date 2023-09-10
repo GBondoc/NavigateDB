@@ -77,8 +77,8 @@ public class ErdServiceImpl implements ErdService {
     }
 
     @Override
-    public void deleteErd(String erdId) throws ErdServiceException {
-        ErdEntity erdEntity = erdRepository.findByErdId(erdId);
+    public void deleteErd(String userId, String erdId) throws ErdServiceException {
+        ErdEntity erdEntity = erdRepository.findByUserDetailsUserIdAndErdId(userId, erdId);
 
         if(erdEntity == null) throw new ErdServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 

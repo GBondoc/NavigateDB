@@ -89,15 +89,15 @@ public class ErdController {
         return modelMapper.map(updatedErd, ErdRest.class);
     }
 
-    @DeleteMapping(path = "/{id}",
+    @DeleteMapping(path = "/{erdId}",
             produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
-    public OperationStatusModel deleteErd(@PathVariable String id) {
+    public OperationStatusModel deleteErd(@PathVariable String userId, @PathVariable String erdId) {
 
         OperationStatusModel returnValue = new OperationStatusModel();
         returnValue.setOperationName(RequestOperationName.DELETE.name());
 
-        erdService.deleteErd(id);
+        erdService.deleteErd(userId, erdId);
 
         returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
 
