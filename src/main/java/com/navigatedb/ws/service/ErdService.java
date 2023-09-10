@@ -11,7 +11,7 @@ public interface ErdService {
 
     ErdDto updateErd(String erdId, ErdDto erd);
 
-    void deleteErd(String erdId);
+    void deleteErd(String userId, String erdId);
 
     List<ErdDto> getErds(int page, int limit);
 

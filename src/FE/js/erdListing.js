@@ -19,14 +19,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const selectedErds = [];
 
-    function confirmDelete() {
-        // Perform the actual delete operation using API requests
-        // Clear the selectedErds array
-        // Clear the selectedErdList container
-        selectedErds.length = 0;
-        selectedErdList.innerHTML = '';
-        selectedErdsSection.style.display = 'none'; // Hide the selected ERDs section
+    async function getPromisse(promisse) {
+        try {
+            const result = await promisse;
+            return result;
+        } catch (error) {
+            console.error(error);
+        }
     }
+
+    async function confirmDelete() {
+        try {
+            for (let i = 0; i < selectedErds.length; i++) {
+                const erdName = selectedErds[i];
+                console.log(`Deleting ${erdName}...`);
+                const erdId = await getErdIdFromName(erdName);
+                console.log(`ERD ID for ${erdName}: ${erdId}`);
+                await deleteErdById(erdId);
+                console.log(`${erdName} deleted.`);
+            }
+
+            selectedErds.length = 0;
+            selectedErdList.innerHTML = '';
+            selectedErdsSection.style.display = 'none';
+            location.reload();
+        } catch (error) {
+            console.error('Error deleting ERDs:', error);
+            displayErrorMessage('An error occurred while deleting ERDs. Please try again later.');
+        }
+    }
+
 
     function cancelDelete() {
         selectedErds.length = 0;
@@ -63,12 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     erdGrid.addEventListener('click', (event) => {
-        if (deleteErdButtonClicked) {
-            // Handle selection for deletion here if delete button is clicked
-            const erdName = event.target.textContent;
-            toggleSelectErdForDeletion(erdName);
-        } else {
-            // If delete button is not clicked, handle ERD square click as navigation
+        if (!deleteErdButtonClicked) {
             const erdName = event.target.textContent;
 
             const erdId = getErdIdFromName(erdName);
@@ -100,6 +117,25 @@ document.addEventListener("DOMContentLoaded", () => {
     // Function to display error message
     function displayErrorMessage(message) {
         errorMessageElement.textContent = message;
+    }
+
+    async function deleteErdById(erdId) {
+        try {
+            const deletedErdById = await fetch(`http://localhost:8080/NavigateDB/users/${publicUserId}/erds/${erdId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+            if(!deletedErdById.ok) {
+                throw new Error(`Error deleting ERD`);
+            }
+        } catch (error) {
+            console.error('Error fetching ERD:', error);
+            displayErrorMessage('An error occurred while fetching ERDs. Please try again later.');
+        }
     }
 
     async function getErdIdFromName(name) {
