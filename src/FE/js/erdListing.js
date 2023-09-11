@@ -78,16 +78,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let deleteErdButtonClicked = false; // Flag to track Delete ERDs button click
 
     erdGrid.addEventListener('click', (event) => {
-        if (deleteErdButtonClicked && event.target.classList.contains('erd-square')) {
+        if (deleteErdButtonClicked) {
+            // Handle ERD selection for deletion
+            if (event.target.classList.contains('erd-square')) {
+                const erdName = event.target.textContent;
+                toggleSelectErdForDeletion(erdName);
+            }
+        } else if (event.target.classList.contains('erd-square')) {
+            // Handle ERD redirection only if a valid ERD square was clicked
             const erdName = event.target.textContent;
-            toggleSelectErdForDeletion(erdName);
-        }
-    });
-
-    erdGrid.addEventListener('click', (event) => {
-        if (!deleteErdButtonClicked) {
-            const erdName = event.target.textContent;
-
             const erdId = getErdIdFromName(erdName);
             localStorage.setItem('erdId', erdId);
             if (erdId) {
