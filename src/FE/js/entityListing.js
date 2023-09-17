@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const publicUserId = localStorage.getItem('publicUserId');
     const selectedErd = localStorage.getItem('erdId');
 
-    console.log(selectedErd);
     async function fetchEntities() {
         try {
             const response = await fetch(`http://localhost:8080/NavigateDB/users/${publicUserId}/erds/${selectedErd}/entities`, {
