@@ -6,19 +6,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedErd = localStorage.getItem('erdId');
 
     const relatedEntitySelect = document.getElementById('relatedEntity');
+    const relationTypeSelect = document.getElementById('relationType');
 
     entityForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const entityNameInput = entityForm.querySelector(".form__input[placeholder='Entity Name']");
         const rowCountInput = entityForm.querySelector(".form__input[placeholder='Row Count']");
-        const dropdown = document.getElementById('relatedEntity');
+        const relatedEntityDropdown = document.getElementById('relatedEntity');
+        const relationTypeDropdown = document.getElementById('relationType');
 
         const entityName = entityNameInput.value;
         const rowCount = rowCountInput.value;
-        const selectedOption = dropdown.options[dropdown.selectedIndex].value;
+        const selectedRelatedEntity = relatedEntityDropdown.options[relatedEntityDropdown.selectedIndex].value;
+        const selectedRelationType = relationTypeDropdown.options[relationTypeDropdown.selectedIndex].value;
     });
-
 
     async function fetchEntities() {
         try {
@@ -60,5 +62,41 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    async function fetchRelationTypes() {
+        try {
+            const response = await fetch(`http://localhost:8080/NavigateDB/relations`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Error fetching relation types');
+            }
+
+            const data = await response.json();
+
+            relationTypeSelect.innerHTML = '';
+
+            const defaultOption = document.createElement('option');
+            defaultOption.value = 'None';
+            defaultOption.text = 'None';
+            relationTypeSelect.appendChild(defaultOption);
+
+            data.forEach(relationType => {
+                const option = document.createElement('option');
+                option.value = relationType.relationId;
+                option.text = relationType.relationType + ' nullable: ' + relationType.nullable;
+                relationTypeSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error fetching relation types:', error);
+        }
+    }
+
     fetchEntities();
+    fetchRelationTypes();
 });
