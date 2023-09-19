@@ -83,3 +83,27 @@ body {
 .list-entity:hover {
     background-color: #007f65;
 }
+
+.top-bar {
+    background-color: #666666;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.logout-button {
+    background-color: #805232;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-decoration: none;
+}
+
+.logout-button:hover {
+    background-color: #00856b;
+}
