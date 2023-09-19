@@ -117,7 +117,7 @@ body {
 }
 
 .logout-button {
-    background-color: #805232; /* Adjust the background color */
+    background-color: #805232;
     color: white;
     border: none;
     border-radius: 10px;
@@ -128,5 +128,5 @@ body {
 }
 
 .logout-button:hover {
-    background-color: #00856b; /* Adjust the hover color */
+    background-color: #00856b;
 }
