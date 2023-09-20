@@ -23,6 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if(createErdResponse.ok) {
                 setFormMessage(erdForm, 'success', 'Erd has been created');
+
+                window.location.href = "../erdManagement.html";
             } else {
                 if(name.length === 0) {
                     setFormMessage(erdForm, 'error', "Field can't be empty");
