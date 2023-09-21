@@ -20,6 +20,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const rowCount = rowCountInput.value;
         const selectedRelatedEntity = relatedEntityDropdown.options[relatedEntityDropdown.selectedIndex].value;
         const selectedRelationType = relationTypeDropdown.options[relationTypeDropdown.selectedIndex].value;
+
+        if (isNaN(rowCount)) {
+            console.log('Row Count must be a valid number.');
+            return;
+        }
+
+        if (selectedRelatedEntity === "None" && selectedRelationType === "None")
+            commitEntityWithoutRelation(entityName, rowCount);
+        else
+            commitEntityWithRelation(entityName, rowCount, selectedRelatedEntity, selectedRelationType);
+
     });
 
     async function fetchEntities() {
