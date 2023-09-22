@@ -17,9 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const relationTypeDropdown = document.getElementById('relationType');
 
         const entityName = entityNameInput.value;
-        const rowCount = rowCountInput.value;
         const selectedRelatedEntity = relatedEntityDropdown.options[relatedEntityDropdown.selectedIndex].value;
         const selectedRelationType = relationTypeDropdown.options[relationTypeDropdown.selectedIndex].value;
+        const rowCount = parseInt(rowCountInput.value, 10);
 
         if (isNaN(rowCount)) {
             console.log('Row Count must be a valid number.');
@@ -27,11 +27,43 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (selectedRelatedEntity === "None" && selectedRelationType === "None")
-            commitEntityWithoutRelation(entityName, rowCount);
+            await commitEntityWithoutRelation(entityName, rowCount);
         else
-            commitEntityWithRelation(entityName, rowCount, selectedRelatedEntity, selectedRelationType);
+            await commitEntityWithRelation(entityName, rowCount, selectedRelatedEntity, selectedRelationType);
 
     });
+
+    async function commitEntityWithoutRelation(name, rowCount) {
+        try {
+            if (!token || !selectedErd) {
+                console.error('Missing required data from localStorage.');
+                return;
+            }
+
+            const input = {name, rowCount};
+            console.log(input);
+
+            const response = await fetch(`http://localhost:8080/NavigateDB/users/${publicUserId}/erds/${selectedErd}/entities`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(input)
+            });
+
+            if (!response.ok) {
+                throw new Error('Error inserting entities');
+            }
+        } catch (error) {
+            console.error('Error adding entity:', error);
+        }
+    }
+
+    async function commitEntityWithRelation(entityName, rowCount, selectedRelatedEntity, selectedRelationType) {
+
+    }
 
     async function fetchEntities() {
         try {
