@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         await commitEntity(entityName, rowCount);
+        window.location.href = "../entityManagement.html";
     });
 
     async function commitEntity(name, rowCount) {
