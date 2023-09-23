@@ -13,12 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const entityNameInput = entityForm.querySelector(".form__input[placeholder='Entity Name']");
         const rowCountInput = entityForm.querySelector(".form__input[placeholder='Row Count']");
-        const relatedEntityDropdown = document.getElementById('relatedEntity');
-        const relationTypeDropdown = document.getElementById('relationType');
 
         const entityName = entityNameInput.value;
-        const selectedRelatedEntity = relatedEntityDropdown.options[relatedEntityDropdown.selectedIndex].value;
-        const selectedRelationType = relationTypeDropdown.options[relationTypeDropdown.selectedIndex].value;
         const rowCount = parseInt(rowCountInput.value, 10);
 
         if (isNaN(rowCount)) {
@@ -26,14 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        if (selectedRelatedEntity === "None" && selectedRelationType === "None")
-            await commitEntityWithoutRelation(entityName, rowCount);
-        else
-            await commitEntityWithRelation(entityName, rowCount, selectedRelatedEntity, selectedRelationType);
-
+        await commitEntity(entityName, rowCount);
+        window.location.href = "../entityManagement.html";
     });
 
-    async function commitEntityWithoutRelation(name, rowCount) {
+    async function commitEntity(name, rowCount) {
         try {
             if (!token || !selectedErd) {
                 console.error('Missing required data from localStorage.');
@@ -59,10 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error('Error adding entity:', error);
         }
-    }
-
-    async function commitEntityWithRelation(entityName, rowCount, selectedRelatedEntity, selectedRelationType) {
-
     }
 
     async function fetchEntities() {
