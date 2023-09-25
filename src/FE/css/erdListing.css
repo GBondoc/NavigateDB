@@ -68,7 +68,7 @@ body {
 }
 
 .delete-erds-button {
-    background-color: red;
+    background-color: #FF4136;
     color: white;
     border: none;
     border-radius: 10px;
@@ -128,5 +128,20 @@ body {
 }
 
 .logout-button:hover {
-    background-color: #00856b;
+    background-color: #803232;
+}
+
+.edit-erds-button {
+    background-color: #0074D9;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-decoration: none;
+}
+
+.edit-erds-button:hover {
+    background-color: #4169E1;
 }
