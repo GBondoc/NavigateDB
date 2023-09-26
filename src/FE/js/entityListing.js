@@ -5,10 +5,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const token = localStorage.getItem('jwtToken');
     const publicUserId = localStorage.getItem('publicUserId');
     const selectedErd = localStorage.getItem('erdId');
+    let selectedEntityId = null;
 
     entityList.addEventListener('click', async (event) => {
         if (event.target.classList.contains('list-entity')) {
             const entityId = event.target.dataset.id;
+
+            if (selectedEntityId) {
+                const previousEntity = entityList.querySelector(`[data-id="${selectedEntityId}"]`);
+                previousEntity.classList.remove('selected');
+            }
+
+            event.target.classList.add('selected');
+            selectedEntityId = entityId;
+
+            entityDetails.innerHTML = '';
 
             try {
                 const response = await fetch(`http://localhost:8080/NavigateDB/users/${publicUserId}/erds/${selectedErd}/entities/${entityId}`, {
